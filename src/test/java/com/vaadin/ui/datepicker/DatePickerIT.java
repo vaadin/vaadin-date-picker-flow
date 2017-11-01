@@ -34,7 +34,7 @@ public class DatePickerIT extends ComponentDemoTest {
     public static void main(String... args) throws Exception {
         new ComponentDemoServer().startServer();
     }
-
+    
     @Before
     public void init() {
         waitForElementPresent(By.tagName("vaadin-date-picker"));
@@ -133,10 +133,4 @@ public class DatePickerIT extends ComponentDemoTest {
         waitUntil(
                 driver -> "Select the starting date".equals(message.getText()));
     }
-
-    @Override
-    protected String getTestPath() {
-        return "/";
-    }
-
 }
