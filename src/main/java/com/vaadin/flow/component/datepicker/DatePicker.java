@@ -25,8 +25,8 @@ import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasValidation;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.dom.Element;
+import com.vaadin.flow.internal.JsonSerializer;
 import com.vaadin.flow.shared.Registration;
-import com.vaadin.flow.util.JsonSerializer;
 
 import elemental.json.JsonArray;
 import elemental.json.JsonObject;
