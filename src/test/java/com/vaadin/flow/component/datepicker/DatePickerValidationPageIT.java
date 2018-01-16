@@ -96,7 +96,6 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
 
     private void assertValid() {
         String invalid = field.getAttribute("invalid");
-        System.out.println("the Valid string" + invalid);
         Assert.assertFalse("The element should be in valid state",
                 Boolean.parseBoolean(invalid));
 
