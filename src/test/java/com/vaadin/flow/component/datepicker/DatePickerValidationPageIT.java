@@ -26,6 +26,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
+import com.google.common.base.Strings;
 import com.vaadin.flow.testutil.AbstractComponentIT;
 import com.vaadin.flow.testutil.TestPath;
 
@@ -59,7 +60,7 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
     public void invalidateWhenNotEmpty() {
         setValue("not-empty");
         scrollIntoViewAndClick(invalidate);
-        assertText("null");
+        assertServerValueField("null");
         assertInvalid();
     }
 
@@ -77,13 +78,13 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
     public void validateAndInvalidateAgainWithValues() {
         setValue("1/1/2018");
         assertValid();
-        assertText("2018-01-01");
+        assertServerValueField("2018-01-01");
         setValue("asfda");
         assertInvalid();
-        assertText("null");
+        assertServerValueField("null");
         setValue("1/2/2018");
         assertValid();
-        assertText("2018-01-02");
+        assertServerValueField("2018-01-02");
     }
 
     @Test
@@ -108,10 +109,11 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
                 Boolean.parseBoolean(invalid));
 
         String errorMessage = field.getAttribute("errorMessage");
-        Assert.assertTrue(errorMessage == null || "".equals(errorMessage));
+        Assert.assertTrue("Expected no value for errorMessage",
+                Strings.isNullOrEmpty(errorMessage));
     }
 
-    private void assertText(String text) {
+    private void assertServerValueField(String text) {
         assertTrue(findElement(By.id("server-side-value")).getText()
                 .contains(text));
     }
