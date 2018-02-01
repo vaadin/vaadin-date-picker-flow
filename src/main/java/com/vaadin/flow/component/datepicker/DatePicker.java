@@ -384,7 +384,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
     }
 
     /**
-     * Set the initial date for the datePicker.
+     * Date which should be visible when there is no value selected.
      * <p>
      * The same date formats as for the {@code value} property are supported.
      * </p>
@@ -401,7 +401,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
     }
 
     /**
-     * Get the initial date of the datepicker.
+     * Get the visible date when there is no value selected.
      * <p>
      * The same date formats as for the {@code value} property are supported.
      * <p>
@@ -432,9 +432,19 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
         return isRequiredBoolean();
     }
 
-    @Override
-    public void setShowWeekNumbers(boolean showWeekNumbers) {
-        super.setShowWeekNumbers(showWeekNumbers);
+    /**
+     * Set the week number visible in the DatePicker.
+     * <p>
+     * Set true to display ISO-8601 week numbers in the calendar.
+     * <p>
+     * Notice that displaying week numbers is only supported when
+     * i18n.firstDayOfWeek is 1 (Monday).
+     * 
+     * @param showWeekNumbers
+     *            the boolean value to set
+     */
+    public void setWeekNumbersVisible(boolean weekNumbersVisible) {
+        super.setShowWeekNumbers(weekNumbersVisible);
     }
 
     /**
@@ -446,7 +456,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
      * 
      * @return the {@code showWeekNumbers} property from the datepicker
      */
-    public boolean isShowWeekNumbers() {
+    public boolean isWeekNumbersVisible() {
         return isShowWeekNumbersBoolean();
     }
 
@@ -462,6 +472,34 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
      */
     public boolean isOpened() {
         return isOpenedBoolean();
+    }
+
+    @Override
+    public void setName(String name) {
+        super.setName(name);
+    }
+
+    /**
+     * Gets the name of the DatePicker.
+     * 
+     * @return the {@code name} property from the DatePicker
+     */
+    public String getName() {
+        return getNameString();
+    }
+
+    @Override
+    public void setReadonly(boolean readonly) {
+        super.setReadonly(readonly);
+    }
+
+    /**
+     * Gets the {@code readonly} property from the DatePicker.
+     * 
+     * @return the {@code readonly} property from the DatePicker
+     */
+    public boolean isReadonly() {
+        return isReadonlyBoolean();
     }
 
     @Override
