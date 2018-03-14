@@ -254,7 +254,6 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
      *
      * @param i18n
      *            the internationalized properties, not <code>null</code>
-     * @return this instance for method chaining
      */
     public void setI18n(DatePickerI18n i18n) {
         Objects.requireNonNull(i18n,
