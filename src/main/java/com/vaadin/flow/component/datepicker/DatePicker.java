@@ -256,7 +256,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
      *            the internationalized properties, not <code>null</code>
      * @return this instance for method chaining
      */
-    public DatePicker setI18n(DatePickerI18n i18n) {
+    public void setI18n(DatePickerI18n i18n) {
         Objects.requireNonNull(i18n,
                 "The I18N properties object should not be null");
         JsonObject json = (JsonObject) JsonSerializer.toJson(i18n);
@@ -264,7 +264,6 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
         for (String key : json.keys()) {
             element.setPropertyJson(I18N_PROPERTY + "." + key, json.get(key));
         }
-        return get();
     }
 
     @Override
@@ -285,7 +284,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
         return getElement().addPropertyChangeListener(
                 getClientValuePropertyName(),
                 event -> listener
-                        .onComponentEvent(new ValueChangeEvent<>(get(), this,
+                        .onComponentEvent(new ValueChangeEvent<>(this, this,
                                 convertDateFromString(
                                         (String) event.getOldValue()),
                                 event.isUserOriginated())));
