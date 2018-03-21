@@ -19,12 +19,14 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasValidation;
 import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.internal.JsonSerializer;
 import com.vaadin.flow.shared.Registration;
@@ -41,6 +43,9 @@ import elemental.json.JsonObject;
  * {@link DatePickerI18n} object.
  *
  */
+@JavaScript("frontend://moment.min.js")
+@JavaScript("frontend://sugar-custom.min.js")
+@JavaScript("frontend://datepickerConnector.js")
 public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
         implements HasValue<DatePicker, LocalDate>, HasSize, HasValidation {
 
@@ -65,6 +70,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
         getElement().synchronizeProperty("value", "value-changed");
         getElement().synchronizeProperty("invalid", "invalid-changed");
         doSetValue(initialDate);
+        addAttachListener(event -> initConnector());
     }
 
     /**
@@ -162,6 +168,23 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
         this(initialDate);
         setValue(initialDate);
         addValueChangeListener(listener);
+    }
+
+    private void initConnector() {
+        getUI().orElseThrow(() -> new IllegalStateException(
+                "Connector can only be initialized for an attached DatePicker"))
+                .getPage()
+                .executeJavaScript("window.datepickerConnector.initLazy($0)",
+                        getElement());
+    }
+
+    public void setLocaleAndDateFormat(Locale locale, String format) {
+        getElement().callFunction("$connector.setDateFormat",
+                locale.getLanguage(), format);
+    }
+
+    public void setSeparator(String separator) {
+        getElement().callFunction("$connector.setSeparator", ".");
     }
 
     /**

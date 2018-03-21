@@ -17,6 +17,7 @@ package com.vaadin.flow.component.datepicker.demo;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Locale;
 
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.datepicker.DatePicker.DatePickerI18n;
@@ -34,10 +35,34 @@ public class DatePickerView extends DemoView {
 
     @Override
     public void initView() {
-        createSimpleDatePicker();
-        createMinAndMaxDatePicker();
-        createFinnishDatePicker();
-        createStartAndEndDatePickers();
+        createDatePickerWithCustomFormat();
+        // createSimpleDatePicker();
+        // createMinAndMaxDatePicker();
+        // createFinnishDatePicker();
+        // createStartAndEndDatePickers();
+    }
+
+    private void createDatePickerWithCustomFormat() {
+        // begin-source-example
+        // source-example-heading Date picker with custom format
+        DatePicker datePicker = new DatePicker();
+
+        // sugar.js can use all kinds of crazy formats like this but it doesn't
+        // work with datepicker because it can't be converted back from string
+        // to date
+        datePicker.setLocaleAndDateFormat(Locale.ITALIAN,
+                "{dd}--{month}!{yyyy}");
+
+        // setting the default locale-based format with custom separator
+        datePicker.setSeparator(".");
+
+        datePicker.addValueChangeListener(event -> {
+            System.out.println(datePicker.getValue());
+        });
+        // end-source-example
+
+        datePicker.setId("picker-with-format");
+        addCard("Date picker with custom format", datePicker);
     }
 
     private void createSimpleDatePicker() {
