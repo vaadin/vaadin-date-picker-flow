@@ -16,9 +16,11 @@
 package com.vaadin.flow.component.datepicker;
 
 import java.io.Serializable;
+import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import com.vaadin.flow.component.ComponentEventListener;
@@ -46,6 +48,8 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_DATE;
     private static final String I18N_PROPERTY = "i18n";
+    private static final DateFormatSymbols month = new DateFormatSymbols(
+            Locale.CHINA);
 
     /**
      * Default constructor.
@@ -216,6 +220,63 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
      */
     public LocalDate getMax() {
         return convertDateFromString(getMaxAsStringString());
+    }
+
+    public enum Separator {
+        SPACE(""), DOT("."), SLASH("/"), DASH("-");
+        private String separator;
+
+        Separator(String separator) {
+            this.separator = separator;
+        }
+
+        public String toString() {
+            return this.separator;
+        }
+    }
+
+
+    public void setDateFormat(Separator separator) {
+        getElement().getNode().runWhenAttached(ui -> ui.getPage()
+                .executeJavaScript("$0.i18n.formatDate = function(d){"
+                        + "return [d.day, d.month+1, d.year].join($1);" + "}",
+                        this.getElement(), separator.toString()));
+        setParseDate(separator);
+    }
+
+    // public void setDateFormat(Separator separator) {
+    // getElement().getNode().runWhenAttached(ui -> ui.getPage()
+    // .executeJavaScript("$0.i18n.formatDate = function(d){"
+    // + "return [$1,d. day, d.year].join($2);" + "}",
+    // this.getElement(),
+    // month.getMonths()[1],
+    // separator.toString()));
+    // }
+
+    private void setParseDate(Separator separator) {
+        getElement().getNode().runWhenAttached(ui -> ui.getPage()
+                .executeJavaScript("$0.i18n.parseDate = function(text){"
+                        + "const parts = text.split($1);\r\n"
+                        + "                const today = new Date();\r\n"
+                        + "                let date, month = today.getMonth(), year = today.getFullYear();\r\n"
+                        + "\r\n"
+                        + "                if (parts.length === 3) {\r\n"
+                        + "                  year = parseInt(parts[2]);\r\n"
+                        + "                  if (parts[2].length < 3 && year >= 0) {\r\n"
+                        + "                    year += year < 50 ? 2000 : 1900;\r\n"
+                        + "                  }\r\n"
+                        + "                  month = parseInt(parts[1]) - 1;\r\n"
+                        + "                  date = parseInt(parts[0]);\r\n"
+                        + "                } else if (parts.length === 2) {\r\n"
+                        + "                  month = parseInt(parts[1]) - 1;\r\n"
+                        + "                  date = parseInt(parts[0]);\r\n"
+                        + "                } else if (parts.length === 1) {\r\n"
+                        + "                  date = parseInt(parts[0]);\r\n"
+                        + "                }\r\n" + "\r\n"
+                        + "                if (date !== undefined) {\r\n"
+                        + "                  return {day: date, month, year};\r\n"
+                        + "                }" + "}", this.getElement(),
+                        separator.toString()));
     }
 
     /**

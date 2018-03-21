@@ -20,6 +20,7 @@ import java.util.Arrays;
 
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.datepicker.DatePicker.DatePickerI18n;
+import com.vaadin.flow.component.datepicker.DatePicker.Separator;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.demo.DemoView;
 import com.vaadin.flow.router.Route;
@@ -57,6 +58,8 @@ public class DatePickerView extends DemoView {
                 message.setText("No date is selected");
             }
         });
+        datePicker.setDateFormat(Separator.DASH);
+        // datePicker.setDateFormat(Separator.DOT);
         // end-source-example
 
         datePicker.setId("simple-picker");
@@ -130,6 +133,7 @@ public class DatePickerView extends DemoView {
                 message.setText("No date is selected");
             }
         });
+
         // end-source-example
 
         datePicker.setId("finnish-picker");
