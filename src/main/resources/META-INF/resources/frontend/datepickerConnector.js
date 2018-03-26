@@ -11,16 +11,16 @@ window.datepickerConnector = {
 
         datepicker.$connector.setLocale = function(locale){
             try{
-    		    // Check weather the locale is supported or not
+                // Check weather the locale is supported or not
                 new Date().toLocaleDateString(locale);
-    	    } catch (e){
+            } catch (e){
                 throw new RangeError("The locale is not supported.");
-    	    }
+            }
 
             datepicker.i18n.formatDate = function(date){
                 var d = new Date(date.year,date.month,date.day);
                 return d.toLocaleDateString(locale);
-    	    }
+            }
 
             datepicker.i18n.parseDate = function(dateString){
                 const sp = "2009/12/31";
@@ -30,7 +30,7 @@ window.datepickerConnector = {
                 var sample2 = sample.toLocaleDateString(locale);
 
                 if(sample2.toString() == sp) {
-         	        //Date format "YYYY/MM/DD"
+                    //Date format "YYYY/MM/DD"
                     var date = new Date(dateString);
                 } else if (sample2.toString() == sp.split('/').reverse().join('/')){
                     //Date format "DD/MM/YYYY"
@@ -47,7 +47,7 @@ window.datepickerConnector = {
                     day:date.getDate(),
                     month:date.getMonth(),
                     year:date.getFullYear()
-		        };
+                };
             }
         }
     }
