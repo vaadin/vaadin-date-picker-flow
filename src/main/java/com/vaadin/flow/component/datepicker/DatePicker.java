@@ -19,12 +19,14 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasValidation;
 import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.internal.JsonSerializer;
 import com.vaadin.flow.shared.Registration;
@@ -41,9 +43,9 @@ import elemental.json.JsonObject;
  * {@link DatePickerI18n} object.
  *
  */
+@JavaScript("frontend://datepickerConnector.js")
 public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
         implements HasValue<DatePicker, LocalDate>, HasSize, HasValidation {
-
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_DATE;
     private static final String I18N_PROPERTY = "i18n";
 
@@ -65,6 +67,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
         getElement().synchronizeProperty("value", "value-changed");
         getElement().synchronizeProperty("invalid", "invalid-changed");
         doSetValue(initialDate);
+        addAttachListener(event -> initConnector());
     }
 
     /**
@@ -165,6 +168,20 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
     }
 
     /**
+     * Convenience Constructor to create a date picker with pre-selected date
+     * and locale setup.
+     *
+     * @param initialDate
+     *            the pre-selected date in the picker
+     * @param locale
+     *            the locale for the date picker
+     */
+    public DatePicker(LocalDate initialDate, Locale locale) {
+        this(initialDate);
+        setLocale(locale);
+    }
+
+    /**
      * Sets the minimum date in the date picker. Dates before that will be
      * disabled in the popup.
      *
@@ -218,6 +235,30 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
         return convertDateFromString(getMaxAsStringString());
     }
 
+    /**
+     * Set the Locale for the Date Picker. The displayed date will be matched to
+     * the format used in that locale.
+     * <p>
+     * NOTE:Supported formats are MM/DD/YYYY(default), DD/MM/YYYY and
+     * YYYY/MM/DD. Browser compatibility can be different based on the browser
+     * and mobile devices, you can check here for more details: <a href=
+     * "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString</a>
+     * 
+     * @param locale
+     *            the locale set to the date picker
+     */
+    public void setLocale(Locale locale) {
+        String a = locale.getLanguage() + "-" + locale.getCountry();
+        getElement().callFunction("$connector.setLocale", a);
+    }
+
+    private void initConnector() {
+        getUI().orElseThrow(() -> new IllegalStateException(
+                "Connector can only be initialized for an attached DatePicker"))
+                        .getPage()
+                        .executeJavaScript("window.datepickerConnector.initLazy($0)",
+                                getElement());
+    }
     /**
      * Gets the internationalization properties previously set for this
      * component.

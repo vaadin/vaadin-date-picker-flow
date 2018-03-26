@@ -17,10 +17,12 @@ package com.vaadin.flow.component.datepicker.demo;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Locale;
 
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.datepicker.DatePicker.DatePickerI18n;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.demo.DemoView;
 import com.vaadin.flow.router.Route;
 
@@ -38,6 +40,7 @@ public class DatePickerView extends DemoView {
         createMinAndMaxDatePicker();
         createFinnishDatePicker();
         createStartAndEndDatePickers();
+        createLocaleChangeDatePicker();
     }
 
     private void createSimpleDatePicker() {
@@ -193,6 +196,38 @@ public class DatePickerView extends DemoView {
         addCard("Two linked date pickers", startDatePicker, endDatePicker,
                 message);
 
+    }
+
+    private void createLocaleChangeDatePicker() {
+        Div message = createMessageDiv("Customize-locale-picker-message");
+        // begin-source-example
+        // source-example-heading: Date picker with different date formats
+        DatePicker datePicker = new DatePicker();
+        NativeButton Type1 = new NativeButton(
+                "Date Format: MM/DD/YYYY(default)");
+        NativeButton Type2 = new NativeButton("Date Format: DD/MM/YYYY");
+        NativeButton Type3 = new NativeButton("Date Format: YYYY/MM/DD");
+
+        Type1.addClickListener(e -> datePicker.setLocale(Locale.US));
+        Type2.addClickListener(e -> datePicker.setLocale(Locale.UK));
+        Type3.addClickListener(e -> datePicker.setLocale(Locale.CHINA));
+
+        datePicker.addValueChangeListener(event -> {
+            LocalDate selectedDate = event.getValue();
+            if (selectedDate != null) {
+                message.setText("Day: " + selectedDate.getDayOfMonth()
+                        + "\nMonth: " + selectedDate.getMonthValue()
+                        + "\nYear: " + selectedDate.getYear());
+            } else {
+                message.setText("No date is selected");
+            }
+        });
+        // end-source-example
+
+        datePicker.setId("locale-change-picker");
+        addCard("Date picker with different date formats", datePicker, Type1,
+                Type2, Type3,
+                message);
     }
 
     private Div createMessageDiv(String id) {
