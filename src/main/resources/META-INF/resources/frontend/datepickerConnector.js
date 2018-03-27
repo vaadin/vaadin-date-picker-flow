@@ -14,7 +14,7 @@ window.datepickerConnector = {
                 // Check weather the locale is supported or not
                 new Date().toLocaleDateString(locale);
             } catch (e){
-            	locale = "en-US";
+                locale = "en-US";
                 console.warn("The locale is not supported, use default locale setting(en-US).");
             }
 

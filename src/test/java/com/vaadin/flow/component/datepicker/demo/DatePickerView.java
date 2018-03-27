@@ -201,10 +201,9 @@ public class DatePickerView extends DemoView {
     private void createLocaleChangeDatePicker() {
         Div message = createMessageDiv("Customize-locale-picker-message");
         // begin-source-example
-        // source-example-heading: Date picker with different date formats
+        // source-example-heading: Date picker with customize locales
         DatePicker datePicker = new DatePicker();
-        NativeButton Type1 = new NativeButton(
-                "Date Format: MM/DD/YYYY(default)");
+        NativeButton Type1 = new NativeButton("Date Format: MM/DD/YYYY");
         NativeButton Type2 = new NativeButton("Date Format: DD/MM/YYYY");
         NativeButton Type3 = new NativeButton("Date Format: YYYY/MM/DD");
 
@@ -223,11 +222,11 @@ public class DatePickerView extends DemoView {
             }
         });
         // end-source-example
-
+        Type1.setId("Locale-US");
+        Type2.setId("Locale-UK");
         datePicker.setId("locale-change-picker");
-        addCard("Date picker with different date formats", datePicker, Type1,
-                Type2, Type3,
-                message);
+        addCard("Date picker with customize locales", datePicker, Type1,
+                Type2, Type3, message);
     }
 
     private Div createMessageDiv(String id) {
