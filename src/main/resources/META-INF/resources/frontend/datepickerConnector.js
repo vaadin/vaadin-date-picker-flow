@@ -14,33 +14,35 @@ window.datepickerConnector = {
                 // Check weather the locale is supported or not
                 new Date().toLocaleDateString(locale);
             } catch (e){
-                throw new RangeError("The locale is not supported.");
+            	locale = "en-US";
+                console.warn("The locale is not supported, use default locale setting(en-US).");
             }
 
             datepicker.i18n.formatDate = function(date){
-                var d = new Date(date.year,date.month,date.day);
-                return d.toLocaleDateString(locale);
+                var rawDate = new Date(date.year,date.month,date.day);
+                return rawDate.toLocaleDateString(locale);
             }
 
             datepicker.i18n.parseDate = function(dateString){
-                const sp = "2009/12/31";
-                const sp_parts = sp.split('/');
+                const sample = "2009/12/31";
+                const sample_parts = sample.split('/');
                 var date = new Date();
-                var sample = new Date(sp);
-                var sample2 = sample.toLocaleDateString(locale);
+                var sampleDate = new Date(sample);
+                var sampleLocaleDate = sampleDate.toLocaleDateString(locale);
 
-                if(sample2.toString() == sp) {
+                if(sampleLocaleDate.toString() == sample) {
                     //Date format "YYYY/MM/DD"
                     var date = new Date(dateString);
-                } else if (sample2.toString() == sp.split('/').reverse().join('/')){
+                } else if (sampleLocaleDate.toString() == sample.split('/').reverse().join('/')){
                     //Date format "DD/MM/YYYY"
                     var date = new Date(dateString.split('/').reverse().join('/'));
-                } else if (sample2.toString() == [sp_parts[1], sp_parts[2], sp_parts[0]].join('/')){
+                } else if (sampleLocaleDate.toString() == [sample_parts[1], sample_parts[2], sample_parts[0]].join('/')){
                     //Date format "MM/DD/YYYY"
                     const parts = dateString.split('/');
                     var date = new Date([parts[2],parts[0],parts[1]].join('/'));  
                 } else {
-                    throw ("Selected locale is using unsupported date format.");
+                    console.warn("Selected locale is using unsupported date format, which might affect the parsing date.");
+                    var date = new Date(dateString);
                 }
 
                 return {
