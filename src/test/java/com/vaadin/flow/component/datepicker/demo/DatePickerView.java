@@ -203,13 +203,13 @@ public class DatePickerView extends DemoView {
         // begin-source-example
         // source-example-heading: Date picker with customize locales
         DatePicker datePicker = new DatePicker();
-        NativeButton Type1 = new NativeButton("Date Format: MM/DD/YYYY");
-        NativeButton Type2 = new NativeButton("Date Format: DD/MM/YYYY");
-        NativeButton Type3 = new NativeButton("Date Format: YYYY/MM/DD");
+        NativeButton locale1 = new NativeButton("Locale: US");
+        NativeButton locale2 = new NativeButton("Locale: UK");
+        NativeButton locale3 = new NativeButton("Locale: CHINA");
 
-        Type1.addClickListener(e -> datePicker.setLocale(Locale.US));
-        Type2.addClickListener(e -> datePicker.setLocale(Locale.UK));
-        Type3.addClickListener(e -> datePicker.setLocale(Locale.CHINA));
+        locale1.addClickListener(e -> datePicker.setLocale(Locale.US));
+        locale2.addClickListener(e -> datePicker.setLocale(Locale.UK));
+        locale3.addClickListener(e -> datePicker.setLocale(Locale.CHINA));
 
         datePicker.addValueChangeListener(event -> {
             LocalDate selectedDate = event.getValue();
@@ -222,11 +222,11 @@ public class DatePickerView extends DemoView {
             }
         });
         // end-source-example
-        Type1.setId("Locale-US");
-        Type2.setId("Locale-UK");
+        locale1.setId("Locale-US");
+        locale2.setId("Locale-UK");
         datePicker.setId("locale-change-picker");
-        addCard("Date picker with customize locales", datePicker, Type1,
-                Type2, Type3, message);
+        addCard("Date picker with customize locales", datePicker, locale1,
+                locale2, locale3, message);
     }
 
     private Div createMessageDiv(String id) {

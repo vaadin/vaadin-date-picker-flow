@@ -70,8 +70,6 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
         getElement().synchronizeProperty("invalid", "invalid-changed");
         doSetValue(initialDate);
         addAttachListener(event -> initConnector());
-        getElement().getNode()
-                .runWhenAttached(ui -> setLocale(UI.getCurrent().getLocale()));
     }
 
     /**
@@ -262,6 +260,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
                         .getPage()
                         .executeJavaScript("window.datepickerConnector.initLazy($0)",
                                 getElement());
+        setLocale(UI.getCurrent().getLocale());
     }
     /**
      * Gets the internationalization properties previously set for this
