@@ -320,8 +320,6 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
         }
     }
 
-
-
     @Override
     public void setValue(LocalDate value) {
         if (!Objects.equals(value, getValue())) {
