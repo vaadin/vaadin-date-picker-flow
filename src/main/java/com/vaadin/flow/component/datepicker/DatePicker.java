@@ -174,9 +174,6 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
     /**
      * Convenience Constructor to create a date picker with pre-selected date
      * and locale setup.
-     * <p>
-     * NOTE: locale cannot be Null.
-     * <p>
      *
      * @param initialDate
      *            the pre-selected date in the picker
