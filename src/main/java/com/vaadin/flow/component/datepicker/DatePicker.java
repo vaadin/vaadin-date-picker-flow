@@ -51,6 +51,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_DATE;
     private static final String I18N_PROPERTY = "i18n";
+    private Locale locale = UI.getCurrent().getLocale();
 
     /**
      * Default constructor.
@@ -71,7 +72,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
         getElement().synchronizeProperty("value", "value-changed");
         getElement().synchronizeProperty("invalid", "invalid-changed");
         doSetValue(initialDate);
-        setLocale(UI.getCurrent().getLocale());
+        setLocale(locale);
     }
 
     /**
@@ -252,9 +253,19 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker>
      *            the locale set to the date picker, cannot be null
      */
     public void setLocale(Locale locale) {
+        this.locale = locale;
         Objects.requireNonNull(locale, "Locale must not be null.");
         String languageTag = locale.getLanguage() + "-" + locale.getCountry();
         getElement().callFunction("$connector.setLocale", languageTag);
+    }
+
+    /**
+     * Gets the Locale for this date picker
+     * 
+     * @return the locale used for this picker
+     */
+    public Locale getLocale() {
+        return locale;
     }
 
     @Override
