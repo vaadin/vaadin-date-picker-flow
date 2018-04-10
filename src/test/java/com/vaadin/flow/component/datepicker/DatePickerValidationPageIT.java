@@ -119,10 +119,14 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
     @Test
     public void disabledDatePicker() {
         WebElement disabledPicker = findElement(By.id("picker-inside-div"));
-        Assert.assertFalse(disabledPicker.isEnabled());
+        Assert.assertFalse(
+                "The date picker should be disabled, when the parent component is disabled.",
+                disabledPicker.isEnabled());
 
         findElement(By.id("set-enabled")).click();
-        Assert.assertTrue(disabledPicker.isEnabled());
+        Assert.assertTrue(
+                "The date picker should be enabled after parent component is enabled.",
+                disabledPicker.isEnabled());
     }
 
 
