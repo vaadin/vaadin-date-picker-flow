@@ -32,6 +32,7 @@ window.datepickerConnector = {
                 	var separator = ' ';
                 } else {
                 	console.warn("Input Date contains invalid separator. Trying to use `/` as the separator,  displayed date may be not correct.");
+                	var separator = '/';
                 }
                 
                 const sample = ["2009","12","31"].join(separator);
