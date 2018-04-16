@@ -23,18 +23,18 @@ window.datepickerConnector = {
                 return rawDate.toLocaleDateString(locale);
             }
 
-            datepicker.i18n.parseDate = function(dateString){                
+            datepicker.i18n.parseDate = function(dateString){
                 if (dateString.includes('/')){
-                	var separator = '/';
+                    var separator = '/';
                 } else if (dateString.includes('.')){
-                	var separator = '.';
+                    var separator = '.';
                 } else if (dateString.includes(' ')){
-                	var separator = ' ';
+                    var separator = ' ';
                 } else {
-                	console.warn("Input Date contains invalid separator. Trying to use `/` as the separator,  displayed date may be not correct.");
-                	var separator = '/';
+                    console.warn("Input Date contains invalid separator. Trying to use `/` as the separator,  displayed date may be not correct.");
+                    var separator = '/';
                 }
-                
+
                 const sample = ["2009","12","31"].join(separator);
                 const sample_parts = sample.split(separator);
                 var date = new Date();
