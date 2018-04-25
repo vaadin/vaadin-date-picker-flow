@@ -246,13 +246,14 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
         extends AbstractSinglePropertyField<R, T> implements HasStyle, Focusable<R> {
 
     public <P> GeneratedVaadinDatePicker() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
-    public <P> GeneratedVaadinDatePicker(Class<P> elementPropertyType,
+    public <P> GeneratedVaadinDatePicker(T defaultValue,
+            Class<P> elementPropertyType,
             SerializableFunction<P, T> presentationToModel,
             SerializableFunction<T, P> modelToPresentation) {
-        this("value", null, elementPropertyType, presentationToModel,
+        this("value", defaultValue, elementPropertyType, presentationToModel,
                 modelToPresentation);
     }
 

@@ -18,7 +18,7 @@ package com.vaadin.flow.component.datepicker;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.time.LocalDate;
 
@@ -50,20 +50,19 @@ public class DatePickerTest {
     public void datePicker_basicCases() {
         DatePicker picker = new DatePicker();
 
-        Assert.assertEquals(null, picker.getValue());
-        Assert.assertFalse(picker.getElement().hasProperty("value"));
+        assertEquals(null, picker.getValue());
+        assertFalse(picker.getElement().hasProperty("value"));
 
         picker.setValue(LocalDate.of(2018, 4, 25));
-        Assert.assertEquals("2018-04-25",
-                picker.getElement().getProperty("value"));
+        assertEquals("2018-04-25", picker.getElement().getProperty("value"));
 
         picker.getElement().setProperty("value", "2017-03-24");
-        Assert.assertEquals(LocalDate.of(2017, 3, 24), picker.getValue());
+        assertEquals(LocalDate.of(2017, 3, 24), picker.getValue());
 
         // Cannot do removeProperty because
         // https://github.com/vaadin/flow/issues/3994
         picker.getElement().setProperty("value", null);
-        Assert.assertEquals(null, picker.getValue());
+        assertEquals(null, picker.getValue());
     }
 
     @Test
@@ -71,6 +70,13 @@ public class DatePickerTest {
         DatePicker picker = new DatePicker();
         assertNull(picker.getValue());
         assertEquals(null, picker.getElement().getProperty("value"));
+    }
+
+    @Test
+    public void setInitialValue() {
+        DatePicker picker = new DatePicker(LocalDate.of(2018, 4, 25));
+        assertEquals(LocalDate.of(2018, 4, 25), picker.getValue());
+        assertEquals("2018-04-25", picker.getElement().getProperty("value"));
     }
 
     @Test
