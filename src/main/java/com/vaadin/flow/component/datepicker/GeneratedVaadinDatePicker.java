@@ -245,24 +245,40 @@ import elemental.json.JsonObject;
 public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePicker<R, T>, T>
         extends AbstractSinglePropertyField<R, T> implements HasStyle, Focusable<R> {
 
+    /**
+     * Default Constructor
+     */
     public <P> GeneratedVaadinDatePicker() {
-        this(null, null, null, null);
+        this(null, null, null, null, null);
     }
 
-    public <P> GeneratedVaadinDatePicker(T defaultValue,
+    /**
+     * Constructor
+     * 
+     * @param initialValue
+     *           the initial value to set to the value
+     * @param defaultValue
+     *           the default value to use if the value isn't defined
+     * @param elementPropertyType
+     *           the type of the element property
+     * @param presentationToModel
+     *             a function that converts a string value to a model value
+     * @param modelToPresentation
+     *            a function that converts a model value to a string value
+     * @param <P>
+     *            the property type
+     */
+    public <P> GeneratedVaadinDatePicker(T initialValue, T defaultValue,
             Class<P> elementPropertyType,
             SerializableFunction<P, T> presentationToModel,
             SerializableFunction<T, P> modelToPresentation) {
-        this("value", defaultValue, elementPropertyType, presentationToModel,
-                modelToPresentation);
-    }
-
-    public <P> GeneratedVaadinDatePicker(String propertyName, T defaultValue,
-            Class<P> elementPropertyType,
-            SerializableFunction<P, T> presentationToModel,
-            SerializableFunction<T, P> modelToPresentation) {
-        super(propertyName, defaultValue, elementPropertyType,
+        super("value", defaultValue, elementPropertyType,
                 presentationToModel, modelToPresentation);
+
+        if (initialValue != null) {
+            setModelValue(initialValue, false);
+            setPresentationValue(initialValue);
+        }
     }
 
     /**

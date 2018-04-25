@@ -77,14 +77,9 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      * @see #setValue(LocalDate)
      */
     public DatePicker(LocalDate initialDate) {
-        super(initialDate, String.class, PARSER, FORMATTER);
+        super(initialDate, null, String.class, PARSER, FORMATTER);
         getElement().synchronizeProperty("invalid", "invalid-changed");
         setLocale(UI.getCurrent().getLocale());
-
-        // AbstractField does not update presentation value in ctor.
-        if (initialDate != null) {
-            setPresentationValue(initialDate);
-        }
     }
 
     /**
