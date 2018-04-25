@@ -15,19 +15,23 @@
  */
 package com.vaadin.flow.component.datepicker;
 
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.HasStyle;
-import com.vaadin.flow.component.Focusable;
 import javax.annotation.Generated;
-import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.dependency.HtmlImport;
-import com.vaadin.flow.component.Synchronize;
-import elemental.json.JsonObject;
-import com.vaadin.flow.component.NotSupported;
+
+import com.vaadin.flow.component.AbstractSinglePropertyField;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.shared.Registration;
+import com.vaadin.flow.component.Focusable;
+import com.vaadin.flow.component.HasStyle;
+import com.vaadin.flow.component.NotSupported;
+import com.vaadin.flow.component.Synchronize;
+import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.dom.Element;
+import com.vaadin.flow.function.SerializableFunction;
+import com.vaadin.flow.shared.Registration;
+
+import elemental.json.JsonObject;
 
 /**
  * <p>
@@ -238,8 +242,27 @@ import com.vaadin.flow.dom.Element;
         "Flow#1.0-SNAPSHOT" })
 @Tag("vaadin-date-picker")
 @HtmlImport("frontend://bower_components/vaadin-date-picker/src/vaadin-date-picker.html")
-public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePicker<R>>
-        extends Component implements HasStyle, Focusable<R> {
+public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePicker<R, T>, T>
+        extends AbstractSinglePropertyField<R, T> implements HasStyle, Focusable<R> {
+
+    public <P> GeneratedVaadinDatePicker() {
+        this(null, null, null);
+    }
+
+    public <P> GeneratedVaadinDatePicker(Class<P> elementPropertyType,
+            SerializableFunction<P, T> presentationToModel,
+            SerializableFunction<T, P> modelToPresentation) {
+        this("value", null, elementPropertyType, presentationToModel,
+                modelToPresentation);
+    }
+
+    public <P> GeneratedVaadinDatePicker(String propertyName, T defaultValue,
+            Class<P> elementPropertyType,
+            SerializableFunction<P, T> presentationToModel,
+            SerializableFunction<T, P> modelToPresentation) {
+        super(propertyName, defaultValue, elementPropertyType,
+                presentationToModel, modelToPresentation);
+    }
 
     /**
      * <p>
@@ -1034,7 +1057,7 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
     protected void checkValidity(String value) {
     }
 
-    public static class InvalidChangeEvent<R extends GeneratedVaadinDatePicker<R>>
+    public static class InvalidChangeEvent<R extends GeneratedVaadinDatePicker<R, ?>>
             extends ComponentEvent<R> {
         private final boolean invalid;
 
@@ -1065,7 +1088,7 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
                                         event.isUserOriginated())));
     }
 
-    public static class ValueAsStringChangeEvent<R extends GeneratedVaadinDatePicker<R>>
+    public static class ValueAsStringChangeEvent<R extends GeneratedVaadinDatePicker<R, ?>>
             extends ComponentEvent<R> {
         private final String valueAsString;
 
@@ -1095,7 +1118,7 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
                                 event.isUserOriginated())));
     }
 
-    public static class OpenedChangeEvent<R extends GeneratedVaadinDatePicker<R>>
+    public static class OpenedChangeEvent<R extends GeneratedVaadinDatePicker<R, ?>>
             extends ComponentEvent<R> {
         private final boolean opened;
 
