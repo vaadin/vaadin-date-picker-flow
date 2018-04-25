@@ -70,7 +70,7 @@ public class DatePickerTest {
     public void defaultCtor_does_not_update_values() {
         DatePicker picker = new DatePicker();
         assertNull(picker.getValue());
-        assertEquals(null, picker.getValueAsStringString());
+        assertEquals(null, picker.getElement().getProperty("value"));
     }
 
     @Test
@@ -81,7 +81,7 @@ public class DatePickerTest {
         picker.setValue(null);
 
         assertNull(picker.getValue());
-        assertEquals("", picker.getValueAsStringString());
+        assertEquals("", picker.getElement().getProperty("value"));
     }
 
     @Test

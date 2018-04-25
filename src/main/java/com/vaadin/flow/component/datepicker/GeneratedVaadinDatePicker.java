@@ -341,32 +341,6 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
      * <ul>
      * <li>ISO 8601 {@code &quot;YYYY-MM-DD&quot;} (default)</li>
      * <li>6-digit extended ISO 8601 {@code &quot;+YYYYYY-MM-DD&quot;},
-     * {@code &quot;-YYYYYY-MM-DD&quot;}
-     * <p>
-     * This property is synchronized automatically from client side when a
-     * 'value-changed' event happens.</li>
-     * </ul>
-     * 
-     * @return the {@code value} property from the webcomponent
-     */
-    @Synchronize(property = "value", value = "value-changed")
-    protected String getValueAsStringString() {
-        return getElement().getProperty("value");
-    }
-
-    /**
-     * <p>
-     * Description copied from corresponding location in WebComponent:
-     * </p>
-     * <p>
-     * The value for this element.
-     * </p>
-     * <p>
-     * Supported date formats:
-     * </p>
-     * <ul>
-     * <li>ISO 8601 {@code &quot;YYYY-MM-DD&quot;} (default)</li>
-     * <li>6-digit extended ISO 8601 {@code &quot;+YYYYYY-MM-DD&quot;},
      * {@code &quot;-YYYYYY-MM-DD&quot;}</li>
      * </ul>
      * 
@@ -1086,36 +1060,6 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
                         event -> listener.onComponentEvent(
                                 new InvalidChangeEvent<R>((R) this,
                                         event.isUserOriginated())));
-    }
-
-    public static class ValueAsStringChangeEvent<R extends GeneratedVaadinDatePicker<R, ?>>
-            extends ComponentEvent<R> {
-        private final String valueAsString;
-
-        public ValueAsStringChangeEvent(R source, boolean fromClient) {
-            super(source, fromClient);
-            this.valueAsString = source.getValueAsStringString();
-        }
-
-        public String getValueAsString() {
-            return valueAsString;
-        }
-    }
-
-    /**
-     * Adds a listener for {@code value-changed} events fired by the
-     * webcomponent.
-     * 
-     * @param listener
-     *            the listener
-     * @return a {@link Registration} for removing the event listener
-     */
-    protected Registration addValueAsStringChangeListener(
-            ComponentEventListener<ValueAsStringChangeEvent<R>> listener) {
-        return getElement().addPropertyChangeListener("value",
-                event -> listener.onComponentEvent(
-                        new ValueAsStringChangeEvent<R>((R) this,
-                                event.isUserOriginated())));
     }
 
     public static class OpenedChangeEvent<R extends GeneratedVaadinDatePicker<R, ?>>
