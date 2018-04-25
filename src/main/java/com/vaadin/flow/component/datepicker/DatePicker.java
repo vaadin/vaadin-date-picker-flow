@@ -50,14 +50,16 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
         implements HasSize, HasValidation {
 
     private static final String I18N_PROPERTY = "i18n";
-    private Locale locale;
-    private static SerializableFunction<String, LocalDate> parser = s -> {
+
+    private final static SerializableFunction<String, LocalDate> PARSER = s -> {
         return s == null || s.isEmpty() ? null : LocalDate.parse(s);
     };
 
-    private static SerializableFunction<LocalDate, String> formatter = d -> {
+    private final static SerializableFunction<LocalDate, String> FORMATTER = d -> {
         return d == null ? "" : d.toString();
     };
+
+    private Locale locale;
 
     /**
      * Default constructor.
@@ -75,7 +77,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      * @see #setValue(LocalDate)
      */
     public DatePicker(LocalDate initialDate) {
-        super(String.class, parser, formatter);
+        super(String.class, PARSER, FORMATTER);
 
         getElement().synchronizeProperty("value", "value-changed");
         getElement().synchronizeProperty("invalid", "invalid-changed");
@@ -202,7 +204,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      *            <code>null</code> to remove any minimum constraints
      */
     public void setMin(LocalDate min) {
-        setMinAsString(formatter.apply(min));
+        setMinAsString(FORMATTER.apply(min));
     }
 
     /**
@@ -213,7 +215,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      *         <code>null</code> if there's no minimum
      */
     public LocalDate getMin() {
-        return parser.apply(getMinAsStringString());
+        return PARSER.apply(getMinAsStringString());
     }
 
     /**
@@ -225,7 +227,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      *            <code>null</code> to remove any maximum constraints
      */
     public void setMax(LocalDate max) {
-        setMaxAsString(formatter.apply(max));
+        setMaxAsString(FORMATTER.apply(max));
     }
 
     /**
@@ -236,7 +238,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      *         <code>null</code> if there's no maximum
      */
     public LocalDate getMax() {
-        return parser.apply(getMaxAsStringString());
+        return PARSER.apply(getMaxAsStringString());
     }
 
     /**
@@ -406,7 +408,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      *            the LocalDate value to set
      */
     public void setInitialPosition(LocalDate initialPosition) {
-        setInitialPosition(formatter.apply(initialPosition));
+        setInitialPosition(FORMATTER.apply(initialPosition));
     }
 
     /**
@@ -421,7 +423,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      * @return the {@code initialPosition} property from the datepicker
      */
     public LocalDate getInitialPosition() {
-        return parser.apply(getInitialPositionString());
+        return PARSER.apply(getInitialPositionString());
     }
 
     @Override
