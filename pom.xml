@@ -36,13 +36,9 @@
 
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>flow-server</artifactId>
+            <artifactId>flow</artifactId>
             <version>${flow.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>flow-html-components</artifactId>
-            <version>${flow.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Dependencies for the demo -->
@@ -52,12 +48,6 @@
            <version>1.7.25</version>
            <scope>test</scope>
        </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>flow-component-demo-helpers</artifactId>
-            <version>${flow.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
    <build>
@@ -76,4 +66,30 @@
             </plugin>
         </plugins>
     </build>
+    
+        <profiles>
+        <profile>
+            <id>runTests</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.vaadin</groupId>
+                    <artifactId>flow-server</artifactId>
+                    <version>${flow.version}</version>
+                    <scope>compile</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.vaadin</groupId>
+                    <artifactId>flow-client</artifactId>
+                    <version>${flow.version}</version>
+                    <scope>compile</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.vaadin</groupId>
+                    <artifactId>flow-html-components</artifactId>
+                    <version>${flow.version}</version>
+                    <scope>compile</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
