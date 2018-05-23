@@ -10,8 +10,8 @@ window.Vaadin.Flow.datepickerConnector = {
         datepicker.addEventListener('blur', e => {
         	if (!e.target.value && e.target.invalid) {
         		console.warn("Invalid value in the DatePicker.");
-        		}
-        	});
+        	}
+        });
 
         datepicker.$connector.setLocale = function(locale){
             try{
@@ -21,6 +21,7 @@ window.Vaadin.Flow.datepickerConnector = {
                 locale = "en-US";
                 console.warn("The locale is not supported, use default locale setting(en-US).");
             }
+           
 
             datepicker.i18n.formatDate = function(date){
                 let rawDate = new Date(date.year,date.month,date.day);
@@ -28,6 +29,10 @@ window.Vaadin.Flow.datepickerConnector = {
             }
 
             datepicker.i18n.parseDate = function(dateString){
+            	if (dateString.length == 0){
+            		return;
+            	}
+            	
             	//checking separator which is used in the date
             	let strings = dateString.split(/[\d]/);
             	let separators = strings.filter(string => isNaN(string));
@@ -64,6 +69,23 @@ window.Vaadin.Flow.datepickerConnector = {
                     month:date.getMonth(),
                     year:date.getFullYear()
                 };
+            }
+            
+            let inputValue = datepicker._inputValue || '';
+            if (inputValue.length > 0 && datepicker.i18n.parseDate) {
+                let selectedDate = datepicker.i18n.parseDate(inputValue);
+                // This is ugly, but the parser is a private method.
+                var parts = /^([-+]\d{1}|\d{2,4}|[-+]\d{6})-(\d{1,2})-(\d{1,2})$/.exec(`${selectedDate.year}-${selectedDate.month + 1}-${selectedDate.day}`);
+                if (!parts) {
+                    return;
+                }
+
+                var date = new Date(0, 0); // Wrong date (1900-01-01), but with midnight in local time
+                date.setFullYear(parseInt(parts[1], 10));
+                date.setMonth(parseInt(parts[2], 10) - 1);
+                date.setDate(parseInt(parts[3], 10));
+
+                datepicker._selectedDate = selectedDate && date;
             }
         }
     }
