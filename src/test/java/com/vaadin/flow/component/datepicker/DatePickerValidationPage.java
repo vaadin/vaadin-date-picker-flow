@@ -128,14 +128,14 @@ public class DatePickerValidationPage extends Div {
         datePicker.setId("locale-picker-server");
         NativeButton locale1 = new NativeButton("Locale: Poland");
         NativeButton locale2 = new NativeButton("Locale: Sweden");
-        
+
         locale1.setId("polish-locale-server");
         locale2.setId("swedish-locale-server");
         locale1.addClickListener(
                 e -> datePicker.setLocale(new Locale("pl", "PL")));
         locale2.addClickListener(
                 e -> datePicker.setLocale(new Locale("sv", "SE")));
-        
+
         add(datePicker, locale1, locale2);
     }
 }

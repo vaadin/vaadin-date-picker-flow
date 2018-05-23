@@ -9,9 +9,9 @@ window.Vaadin.Flow.datepickerConnector = {
         datepicker.$connector.oldLocale = "undefined";
 
         datepicker.addEventListener('blur', e => {
-        	if (!e.target.value && e.target.invalid) {
-        		console.warn("Invalid value in the DatePicker.");
-        	}
+            if (!e.target.value && e.target.invalid) {
+                console.warn("Invalid value in the DatePicker.");
+            }
         });
 
         datepicker.$connector.setLocale = function(locale){
@@ -40,11 +40,11 @@ window.Vaadin.Flow.datepickerConnector = {
                 let strings = dateString.split(/[\d]/);
                 let separators = strings.filter(string => isNaN(string));
 
-            	if (separators.length != 2 || separators[0] != separators[1]){
-            		return null;
-            	} else {
-            		var separator = separators[0];
-            	}
+                if (separators.length != 2 || separators[0] != separators[1]){
+                    return null;
+                } else {
+                    var separator = separators[0];
+                }
 
                 const sample = ["2009","12","31"].join(separator);
                 const sample_parts = sample.split(separator);
@@ -66,7 +66,7 @@ window.Vaadin.Flow.datepickerConnector = {
                     console.warn("Selected locale is using unsupported date format, which might affect the parsing date.");
                     date = new Date(dateString);
                 }
-                
+
                 oldLocale = locale;
 
                 return {
