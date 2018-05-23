@@ -129,6 +129,24 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
                 disabledPicker.isEnabled());
     }
 
+    @Test
+    public void testDifferentLocales() {
+        WebElement localePicker = findElement(By.id("locale-picker"));
+        WebElement displayText = findInShadowRoot(localePicker, By.id("input"))
+                .get(0);
+        findElement(By.id("polish-locale")).click();
+
+        executeScript("arguments[0].value = '2018-03-26'", localePicker);
+        Assert.assertEquals("Polish Locale is using DD.MM.YYYY format ", true,
+                executeScript("return arguments[0].value === '26.03.2018'",
+                        displayText));
+
+        findElement(By.id("swedish-locale")).click();
+        executeScript("arguments[0].value = '2018-03-25'", localePicker);
+        Assert.assertEquals("Swedish Locale is using YYYY-MM-DD format ", true,
+                executeScript("return arguments[0].value === '2018-03-25'",
+                        displayText));
+    }
 
     private void assertInvalid() {
         String invalid = field.getAttribute("invalid");

@@ -6,6 +6,12 @@ window.Vaadin.Flow.datepickerConnector = {
         }
 
         datepicker.$connector = {};
+        
+        datepicker.addEventListener('blur', e => {
+        	if (!e.target.value && e.target.invalid) {
+        		console.warn("Invalid value in the DatePicker.");
+        		}
+        	});
 
         datepicker.$connector.setLocale = function(locale){
             try{
@@ -17,41 +23,40 @@ window.Vaadin.Flow.datepickerConnector = {
             }
 
             datepicker.i18n.formatDate = function(date){
-                var rawDate = new Date(date.year,date.month,date.day);
+                let rawDate = new Date(date.year,date.month,date.day);
                 return rawDate.toLocaleDateString(locale);
             }
 
             datepicker.i18n.parseDate = function(dateString){
-                if (dateString.includes('/')){
-                    var separator = '/';
-                } else if (dateString.includes('.')){
-                    var separator = '.';
-                } else if (dateString.includes(' ')){
-                    var separator = ' ';
-                } else {
-                    console.warn("Input Date contains invalid separator. Trying to use `/` as the separator,  displayed date may be not correct.");
-                    var separator = '/';
-                }
+            	//checking separator which is used in the date
+            	let strings = dateString.split(/[\d]/);
+            	let separators = strings.filter(string => isNaN(string));
+            	
+            	if (separators.length != 2 || separators[0] != separators[1]){
+            		return null;
+            	} else {
+            		var separator = separators[0];
+            	}
 
                 const sample = ["2009","12","31"].join(separator);
                 const sample_parts = sample.split(separator);
-                var date = new Date();
-                var sampleDate = new Date(sample);
-                var sampleLocaleDate = sampleDate.toLocaleDateString(locale);
+                let date = new Date();
+                let sampleDate = new Date(sample);
+                let sampleLocaleDate = sampleDate.toLocaleDateString(locale);
 
                 if (sampleLocaleDate.toString() == sample) {
                     //Date format "YYYY/MM/DD"
-                    var date = new Date(dateString);
+                    date = new Date(dateString);
                 } else if (sampleLocaleDate.toString() == sample.split(separator).reverse().join(separator)){
                     //Date format "DD/MM/YYYY"
-                    var date = new Date(dateString.split(separator).reverse().join(separator));
+                    date = new Date(dateString.split(separator).reverse().join(separator));
                 } else if (sampleLocaleDate.toString() == [sample_parts[1], sample_parts[2], sample_parts[0]].join(separator)){
                     //Date format "MM/DD/YYYY"
                     const parts = dateString.split(separator);
-                    var date = new Date([parts[2],parts[0],parts[1]].join(separator));  
+                    date = new Date([parts[2],parts[0],parts[1]].join(separator));  
                 } else {
                     console.warn("Selected locale is using unsupported date format, which might affect the parsing date.");
-                    var date = new Date(dateString);
+                    date = new Date(dateString);
                 }
 
                 return {

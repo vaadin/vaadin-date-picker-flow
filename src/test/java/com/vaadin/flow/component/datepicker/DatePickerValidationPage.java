@@ -34,6 +34,7 @@ public class DatePickerValidationPage extends Div {
     public DatePickerValidationPage() {
         initView();
         createPickerInsideDiv();
+        createPickerTestLocales();
     }
 
     private void initView() {
@@ -101,5 +102,21 @@ public class DatePickerValidationPage extends Div {
         button.addClickListener(event -> parent.setEnabled(true));
 
         add(parent, button);
+    }
+
+    private void createPickerTestLocales() {
+        DatePicker datePicker = new DatePicker();
+        datePicker.setId("locale-picker");
+        NativeButton locale1 = new NativeButton("Locale: Poland");
+        NativeButton locale2 = new NativeButton("Locale: Sweden");
+
+        locale1.setId("polish-locale");
+        locale2.setId("swedish-locale");
+        locale1.addClickListener(
+                e -> datePicker.setLocale(new Locale("pl", "PL")));
+        locale2.addClickListener(
+                e -> datePicker.setLocale(new Locale("sv", "SE")));
+
+        add(datePicker, locale1, locale2);
     }
 }
