@@ -177,7 +177,6 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
             ValueChangeListener<ComponentValueChangeEvent<DatePicker, LocalDate>> listener) {
         this(initialDate);
         setLabel(label);
-        setValue(initialDate);
         addValueChangeListener(listener);
     }
 
