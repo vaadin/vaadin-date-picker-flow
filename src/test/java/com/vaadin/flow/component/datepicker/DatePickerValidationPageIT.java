@@ -148,6 +148,26 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
                         displayText));
     }
 
+    @Test
+    public void testPickerWithValueAndLocaleFromServerSide() {
+        WebElement localePicker = findElement(By.id("locale-picker-server"));
+        WebElement displayText = findInShadowRoot(localePicker, By.id("input"))
+                .get(0);
+
+        Assert.assertEquals("Initial date is 5/23/2018", true, executeScript(
+                "return arguments[0].value === '5/23/2018'", displayText));
+
+        findElement(By.id("polish-locale-server")).click();
+        Assert.assertEquals("Polish locale date is 23.05.2018", true,
+                executeScript("return arguments[0].value === '23.05.2018'",
+                        displayText));
+
+        findElement(By.id("swedish-locale-server")).click();
+        Assert.assertEquals("Swedish locale date is 2018-05-23", true,
+                executeScript("return arguments[0].value === '2018-05-23'",
+                        displayText));
+    }
+
     private void assertInvalid() {
         String invalid = field.getAttribute("invalid");
         Assert.assertTrue("The element should be in invalid state",
