@@ -26,6 +26,8 @@ import org.openqa.selenium.WebElement;
 import com.vaadin.flow.component.datepicker.demo.DatePickerView;
 import com.vaadin.flow.demo.ComponentDemoTest;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Integration tests for the {@link DatePickerView}.
  */
@@ -165,9 +167,9 @@ public class DatePickerIT extends ComponentDemoTest {
                         displayText));
 
         layout.findElement(By.id("Locale-UK")).click();
-        Assert.assertEquals("Date should change to 25/03/2018", true,
-                executeScript("return arguments[0].value === '25/03/2018'",
-                        displayText));
+        assertTrue((Boolean) executeScript(
+                "return arguments[0].value === '25/03/2018'",
+                displayText));
     }
 
     @Override
