@@ -43,8 +43,8 @@ public class DatePickerIT extends ComponentDemoTest {
 
         executeScript("arguments[0].value = '1985-01-10'", picker);
 
-        waitUntil(driver -> "Day: 10\nMonth: 1\nYear: 1985"
-                .equals(message.getText()));
+        waitUntil(driver -> message.getText()
+                .contains("Day: 10\nMonth: 1\nYear: 1985"));
 
         executeScript("arguments[0].value = ''", picker);
 
@@ -64,9 +64,8 @@ public class DatePickerIT extends ComponentDemoTest {
         Assert.assertEquals("The selected date should be considered valid",
                 false, executeScript("return arguments[0].invalid", picker));
 
-        waitUntil(driver -> ("Day: " + now.getDayOfMonth() + "\nMonth: "
-                + now.getMonthValue() + "\nYear: " + now.getYear())
-                        .equals(message.getText()));
+        waitUntil(driver -> message.getText().contains(("Day: " + now.getDayOfMonth() + "\nMonth: "
+                        + now.getMonthValue() + "\nYear: " + now.getYear())));
 
         executeScript("arguments[0].value = ''", picker);
 
@@ -163,6 +162,11 @@ public class DatePickerIT extends ComponentDemoTest {
         Assert.assertEquals(
                 "The format of the displayed date should be MM/DD/YYYY.", true,
                 executeScript("return arguments[0].value === '3/25/2018'",
+                        displayText));
+
+        layout.findElement(By.id("Locale-UK")).click();
+        Assert.assertEquals("Date should change to 25/03/2018", true,
+                executeScript("return arguments[0].value === '25/03/2018'",
                         displayText));
     }
 
