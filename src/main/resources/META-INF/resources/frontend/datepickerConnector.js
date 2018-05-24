@@ -6,7 +6,7 @@ window.Vaadin.Flow.datepickerConnector = {
         }
 
         datepicker.$connector = {};
-        datepicker.$connector.oldLocale = "undefined";
+        datepicker.$connector.oldLocale;
 
         datepicker.addEventListener('blur', e => {
             if (!e.target.value && e.target.invalid) {
@@ -49,16 +49,15 @@ window.Vaadin.Flow.datepickerConnector = {
                 const sample = ["2009","12","31"].join(separator);
                 const sample_parts = sample.split(separator);
                 let date;
-                let sampleDate = new Date(sample);
-                let sampleOldLocaleDate = sampleDate.toLocaleDateString(oldLocale);
+                var targetLocaleDate = new Date(sample).toLocaleDateString(oldLocale);
 
-                if (sampleOldLocaleDate.toString() == sample) {
+                if (targetLocaleDate.toString() == sample) {
                     //Date format "YYYY/MM/DD"
                     date = new Date(dateString);
-                } else if (sampleOldLocaleDate.toString() == sample.split(separator).reverse().join(separator)){
+                } else if (targetLocaleDate.toString() == sample.split(separator).reverse().join(separator)){
                     //Date format "DD/MM/YYYY"
                     date = new Date(dateString.split(separator).reverse().join(separator));
-                } else if (sampleOldLocaleDate.toString() == [sample_parts[1], sample_parts[2], sample_parts[0]].join(separator)){
+                } else if (targetLocaleDate.toString() == [sample_parts[1], sample_parts[2], sample_parts[0]].join(separator)){
                     //Date format "MM/DD/YYYY"
                     const parts = dateString.split(separator);    
                     date = new Date([parts[2],parts[0],parts[1]].join(separator));  
