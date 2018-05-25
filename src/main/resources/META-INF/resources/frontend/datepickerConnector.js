@@ -31,11 +31,13 @@ window.Vaadin.Flow.datepickerConnector = {
                 return rawDate.toLocaleDateString(locale);
             }
 
-            datepicker.i18n.parseDate = function(dateString){
-                if (dateString.length == 0){
+            datepicker.i18n.parseDate = function(rawDateString){
+                if (rawDateString.length == 0){
                     return;
                 }
 
+                //This aims to filter out some special charactors, especially for Microsoft Edge. 
+                let dateString = rawDateString.replace(/[^\x00-\x7F]/g, "");
                 //checking separator which is used in the date
                 let strings = dateString.split(/[\d]/);
                 let separators = strings.filter(string => isNaN(string));
@@ -49,15 +51,17 @@ window.Vaadin.Flow.datepickerConnector = {
                 const sample = ["2009","12","31"].join(separator);
                 const sample_parts = sample.split(separator);
                 let date;
-                const targetLocaleDate = new Date(sample).toLocaleDateString(oldLocale).toString();
+                const rawTargetLocaleDate = new Date(sample).toLocaleDateString(oldLocale).toString();
+                //Filter unexpected characters in the string, which causes the problem in Microsoft Edge 
+                const targetLocaleDate = rawTargetLocaleDate.replace(/[^\x00-\x7F]/g, "");
 
-                if (targetLocaleDate == sample) {
+                if (targetLocaleDate === sample) {
                     //Date format "YYYY/MM/DD"
                     date = new Date(dateString);
-                } else if (targetLocaleDate == sample.split(separator).reverse().join(separator)){
+                } else if (targetLocaleDate === sample.split(separator).reverse().join(separator)){
                     //Date format "DD/MM/YYYY"
                     date = new Date(dateString.split(separator).reverse().join(separator));
-                } else if (targetLocaleDate == [sample_parts[1], sample_parts[2], sample_parts[0]].join(separator)){
+                } else if (targetLocaleDate === [sample_parts[1], sample_parts[2], sample_parts[0]].join(separator)){
                     //Date format "MM/DD/YYYY"
                     const parts = dateString.split(separator);    
                     date = new Date([parts[2],parts[0],parts[1]].join(separator));  
