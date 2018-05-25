@@ -6,3 +6,7 @@ target/
 .settings
 .classpath
 error-screenshots/
+
+# Idea files
+*.iml
+.idea
