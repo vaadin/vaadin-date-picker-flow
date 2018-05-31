@@ -24,11 +24,21 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
         WebElement displayText = findInShadowRoot(localePicker, By.id("input"))
                 .get(0);
 
-        Assert.assertEquals("Initial date is 2018/5/23", true, executeScript(
-                "return arguments[0].value === '2018/5/23'", displayText));
+        Assert.assertTrue("Initial date is 2018/4/23", (Boolean) executeScript(
+                "return arguments[0].value === '2018/4/23'", displayText));
 
         findElement(By.id("uk-locale")).click();
-        Assert.assertEquals("UK locale date is 23/05/2018", true, executeScript(
-                "return arguments[0].value === '23/05/2018'", displayText));
+        Assert.assertTrue("UK locale date is 23/04/2018",
+                (Boolean) executeScript(
+                        "return arguments[0].value === '23/04/2018'",
+                        displayText));
+
+        localePicker = findElement(By.id("french-locale-date-picker"));
+        displayText = findInShadowRoot(localePicker, By.id("input")).get(0);
+
+        Assert.assertTrue("French locale date should have been 30/05/2018",
+                (Boolean) executeScript(
+                        "return arguments[0].value === '2018/4/23'",
+                        displayText));
     }
 }
