@@ -38,7 +38,7 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
 
         Assert.assertTrue("French locale date should have been 30/05/2018",
                 (Boolean) executeScript(
-                        "return arguments[0].value === '2018/4/23'",
+                        "return arguments[0].value === '30/05/2018'",
                         displayText));
     }
 }
