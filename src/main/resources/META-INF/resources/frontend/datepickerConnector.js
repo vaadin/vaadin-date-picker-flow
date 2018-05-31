@@ -8,7 +8,7 @@ window.Vaadin.Flow.datepickerConnector = {
         datepicker.$connector = {};
 
         const getDefaultLang = function () {
-            if (navigator.languages != undefined) {
+            if (navigator.languages && navigator.languages.length) {
                 return navigator.languages[0];
             }
             return navigator.language;
