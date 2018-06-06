@@ -50,7 +50,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
         implements HasSize, HasValidation {
 
     private static final String I18N_PROPERTY = "i18n";
-    public DatePickerI18n i18n;
+    DatePickerI18n i18n;
 
     private final static SerializableFunction<String, LocalDate> PARSER = s -> {
         return s == null || s.isEmpty() ? null : LocalDate.parse(s);
