@@ -28,7 +28,6 @@ import com.vaadin.flow.component.HasValidation;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.JavaScript;
-import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.function.SerializableFunction;
 import com.vaadin.flow.internal.JsonSerializer;
@@ -50,7 +49,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
         implements HasSize, HasValidation {
 
     private static final String I18N_PROPERTY = "i18n";
-    DatePickerI18n i18n;
+    private DatePickerI18n i18n;
 
     private final static SerializableFunction<String, LocalDate> PARSER = s -> {
         return s == null || s.isEmpty() ? null : LocalDate.parse(s);
@@ -285,7 +284,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
 
     /**
      * Gets the internationalization object previously set for this component.
-     *
+     * <p>
      * Note: updating the object content that is gotten from this method will
      * not update the lang on the component if not set back using
      * {@link DatePicker#setI18n(DatePickerI18n)}
@@ -307,12 +306,15 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
         Objects.requireNonNull(i18n,
                 "The I18N properties object should not be null");
         this.i18n = i18n;
-        JsonObject i18nObject = (JsonObject) JsonSerializer.toJson(i18n);
-        Element element = getElement();
         runBeforeClientResponse(ui -> {
-            for (String key : i18nObject.keys()) {
-                ui.getPage().executeJavaScript("$0.set('i18n." + key + "', $1)",
-                        element, i18nObject.get(key));
+            if (i18n == this.i18n) {
+                JsonObject i18nObject = (JsonObject) JsonSerializer
+                        .toJson(this.i18n);
+                for (String key : i18nObject.keys()) {
+                    ui.getPage().executeJavaScript(
+                            "$0.set('i18n." + key + "', $1)", getElement(),
+                            i18nObject.get(key));
+                }
             }
         });
     }
