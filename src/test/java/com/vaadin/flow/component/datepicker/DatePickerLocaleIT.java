@@ -58,11 +58,8 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
 
         logs = getWaringEntries();
 
-        Assert.assertEquals(
-                "Expected only [Deprecation] warning should be in the logs", 1,
-                logs.size());
-        Assert.assertThat(logs.get(0).getMessage(), CoreMatchers.containsString(
-                "deprecation - Styling master document from stylesheets defined in HTML Imports is deprecated"));
+        Assert.assertTrue("No new warnings should have appeared in the logs",
+                logs.isEmpty());
 
         displayText = localePicker.$(TestBenchElement.class).id("input");
         Assert.assertEquals("Didn't have expected German locale date.",
