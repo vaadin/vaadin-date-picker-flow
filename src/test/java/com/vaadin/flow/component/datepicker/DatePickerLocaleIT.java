@@ -39,21 +39,7 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
                 executeScript("return arguments[0].value", displayText));
 
 
-        assertBrowserLogs();
 
-        localePicker = $(TestBenchElement.class).id("german-locale-date-picker");
-        executeScript("arguments[0].value = '10.01.1985';", localePicker);
-
-        assertBrowserLogs();
-
-        displayText = localePicker.$(TestBenchElement.class).id("input");
-        Assert.assertEquals("Didn't have expected German locale date.",
-                "10.01.1985",
-                executeScript("return arguments[0].value", displayText));
-
-    }
-
-    private void assertBrowserLogs() {
         LogEntries logs = driver.manage().logs().get("browser");
 
         Assert.assertEquals(
@@ -62,5 +48,24 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
         Assert.assertEquals(
                 "deprecation - Styling master document from stylesheets defined in HTML Imports is deprecated. Please refer to https://goo.gl/EGXzpw for possible migration paths.",
                 logs.filter(Level.WARNING).get(0).getMessage());
+
+        localePicker = $(TestBenchElement.class).id("german-locale-date-picker");
+        executeScript("arguments[0].value = '10.01.1985'", localePicker);
+
+        logs = driver.manage().logs().get("browser");
+
+        Assert.assertEquals(
+                "Expected only [Deprecation] warning should be in the logs", 1,
+                logs.filter(Level.WARNING).size());
+        Assert.assertEquals(
+                "deprecation - Styling master document from stylesheets defined in HTML Imports is deprecated. Please refer to https://goo.gl/EGXzpw for possible migration paths.",
+                logs.filter(Level.WARNING).get(0).getMessage());
+
+
+        displayText = localePicker.$(TestBenchElement.class).id("input");
+        Assert.assertEquals("Didn't have expected German locale date.",
+                "10.01.1985",
+                executeScript("return arguments[0].value", displayText));
+
     }
 }
