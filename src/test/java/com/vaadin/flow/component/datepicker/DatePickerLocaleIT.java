@@ -1,12 +1,15 @@
 package com.vaadin.flow.component.datepicker;
 
+import java.util.List;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
 
 import com.vaadin.flow.testutil.AbstractComponentIT;
 import com.vaadin.flow.testutil.TestPath;
@@ -38,28 +41,25 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
         Assert.assertEquals("French locale date had wrong format", "30/05/2018",
                 executeScript("return arguments[0].value", displayText));
 
-
-
-        LogEntries logs = driver.manage().logs().get("browser");
-logs.filter(Level.WARNING).forEach(log -> System.out.println("=== " + log));
+        List<LogEntry> logs = getWaringEntries();
         Assert.assertEquals(
                 "Expected only [Deprecation] warning should be in the logs", 1,
-                logs.filter(Level.WARNING).size());
+                logs.size());
         Assert.assertEquals(
                 "deprecation - Styling master document from stylesheets defined in HTML Imports is deprecated. Please refer to https://goo.gl/EGXzpw for possible migration paths.",
-                logs.filter(Level.WARNING).get(0).getMessage());
+                logs.get(0).getMessage());
 
         localePicker = $(TestBenchElement.class).id("german-locale-date-picker");
         executeScript("arguments[0].value = '10.01.1985'", localePicker);
 
-        logs = driver.manage().logs().get("browser");
+        logs = getWaringEntries();
 
         Assert.assertEquals(
                 "Expected only [Deprecation] warning should be in the logs", 1,
-                logs.filter(Level.WARNING).size());
+                logs.size());
         Assert.assertEquals(
                 "deprecation - Styling master document from stylesheets defined in HTML Imports is deprecated. Please refer to https://goo.gl/EGXzpw for possible migration paths.",
-                logs.filter(Level.WARNING).get(0).getMessage());
+                logs.get(0).getMessage());
 
 
         displayText = localePicker.$(TestBenchElement.class).id("input");
@@ -67,5 +67,11 @@ logs.filter(Level.WARNING).forEach(log -> System.out.println("=== " + log));
                 "10.01.1985",
                 executeScript("return arguments[0].value", displayText));
 
+    }
+
+    private List<LogEntry> getWaringEntries() {
+        LogEntries logs = driver.manage().logs().get("browser");
+        return logs.getAll().stream().filter(log -> log.getLevel().equals(Level.WARNING)).collect(
+                Collectors.toList());
     }
 }
