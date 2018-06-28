@@ -41,7 +41,7 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
 
 
         LogEntries logs = driver.manage().logs().get("browser");
-
+logs.filter(Level.WARNING).forEach(log -> System.out.println("=== " + log));
         Assert.assertEquals(
                 "Expected only [Deprecation] warning should be in the logs", 1,
                 logs.filter(Level.WARNING).size());
