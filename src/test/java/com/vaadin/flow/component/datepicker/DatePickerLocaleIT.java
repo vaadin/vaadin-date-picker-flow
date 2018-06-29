@@ -77,4 +77,18 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
                 .filter(log -> log.getLevel().equals(Level.WARNING))
                 .collect(Collectors.toList());
     }
+
+    @Test
+    public void hungarianLocaleTest() {
+        open();
+
+        checkLogsForErrors();
+        WebElement hungarianPicker = findElement(
+                By.id("hungarian-locale-date-picker"));
+        // trigger the validation on the from clientside
+        hungarianPicker.click();
+        executeScript("document.body.click()");
+
+        checkLogsForErrors();
+    }
 }
