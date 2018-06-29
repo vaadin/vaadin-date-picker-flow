@@ -57,6 +57,9 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
         localePicker = $(DatePickerElement.class)
                 .id("german-locale-date-picker");
         localePicker.setDate(LocalDate.of(1985,1,10));
+        localePicker.setProperty("opened", true);
+        waitForElementPresent(By.tagName(DATEPICKER_OVERLAY));
+        localePicker.setProperty("opened", false);
 
         logs = getWaringEntries();
 
