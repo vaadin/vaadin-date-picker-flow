@@ -47,7 +47,7 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
         Assert.assertEquals("French locale date had wrong format", "30/05/2018",
                 executeScript("return arguments[0].value", displayText));
 
-        List<LogEntry> logs = getWaringEntries();
+        List<LogEntry> logs = getWarningEntries();
         Assert.assertEquals(
                 "Expected only [Deprecation] warning should be in the logs", 1,
                 logs.size());
@@ -59,7 +59,7 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
         localePicker.setDate(LocalDate.of(1985,1,10));
         findElement(By.tagName("body")).click();
 
-        logs = getWaringEntries();
+        logs = getWarningEntries();
 
         Assert.assertTrue("No new warnings should have appeared in the logs",
                 logs.isEmpty());
@@ -71,7 +71,7 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
 
     }
 
-    private List<LogEntry> getWaringEntries() {
+    private List<LogEntry> getWarningEntries() {
         LogEntries logs = driver.manage().logs().get("browser");
         return logs.getAll().stream()
                 .filter(log -> log.getLevel().equals(Level.WARNING))
