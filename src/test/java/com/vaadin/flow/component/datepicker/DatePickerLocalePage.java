@@ -16,6 +16,7 @@ public class DatePickerLocalePage extends Div {
 
     public DatePickerLocalePage() {
         createPickerWithValueAndLocaleViaDifferentCtor();
+        addHungarianLocale();
     }
 
     private void createPickerWithValueAndLocaleViaDifferentCtor() {
@@ -38,5 +39,11 @@ public class DatePickerLocalePage extends Div {
         german.setId("german-locale-date-picker");
 
         add(datePicker, locale, frenchLocale, german);
+    }
+
+    private void addHungarianLocale() {
+        DatePicker datePicker = new DatePicker(may30th, new Locale("hu", "HU"));
+        datePicker.setId("hungarian-locale-date-picker");
+        add(datePicker);
     }
 }
