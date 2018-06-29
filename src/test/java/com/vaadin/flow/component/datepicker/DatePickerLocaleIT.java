@@ -1,7 +1,8 @@
 package com.vaadin.flow.component.datepicker;
 
+import java.util.logging.Level;
+
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -34,5 +35,20 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
         Assert.assertEquals("French locale date had wrong format",
                 "30/05/2018",
                 executeScript("return arguments[0].value", displayText));
+    }
+
+    @Test
+    public void hungarianLocaleTest() {
+        open();
+
+        Assert.assertEquals("There should not error in the console", 0, getLogEntries(Level.SEVERE).size());
+        WebElement hungarianPicker = findElement(
+                By.id("hungarian-locale-date-picker"));
+        // trigger the validation on the from clientside
+        hungarianPicker.click();
+        executeScript("document.body.click()");
+
+        Assert.assertEquals("There should not error in the console", 0,
+                getLogEntries(Level.SEVERE).size());
     }
 }
