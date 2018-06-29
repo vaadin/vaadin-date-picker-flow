@@ -66,7 +66,7 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
 
         displayText = localePicker.$(TestBenchElement.class).id("input");
         Assert.assertEquals("Didn't have expected German locale date.",
-                "10.01.1985",
+                "10.1.1985",
                 executeScript("return arguments[0].value", displayText));
 
     }
