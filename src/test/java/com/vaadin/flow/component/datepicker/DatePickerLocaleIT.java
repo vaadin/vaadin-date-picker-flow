@@ -1,5 +1,6 @@
 package com.vaadin.flow.component.datepicker;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -55,7 +56,7 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
 
         localePicker = $(DatePickerElement.class)
                 .id("german-locale-date-picker");
-        localePicker.setProperty("value", "10.01.1985");
+        localePicker.setDate(LocalDate.of(1985,1,10));
 
         logs = getWaringEntries();
 
