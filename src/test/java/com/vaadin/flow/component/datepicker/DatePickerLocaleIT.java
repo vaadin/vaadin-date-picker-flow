@@ -12,6 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 
+import com.vaadin.flow.component.datepicker.testbench.DatePickerElement;
 import com.vaadin.flow.testutil.AbstractComponentIT;
 import com.vaadin.flow.testutil.TestPath;
 import com.vaadin.testbench.TestBenchElement;
@@ -25,7 +26,7 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
     public void testPickerWithValueAndLocaleFromServerSideDifferentCtor() {
         open();
 
-        TestBenchElement localePicker = $(TestBenchElement.class)
+        DatePickerElement localePicker = $(DatePickerElement.class)
                 .id("locale-picker-server-with-value");
         WebElement displayText = localePicker.$(TestBenchElement.class)
                 .id("input");
@@ -38,7 +39,7 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
                 "23/04/2018",
                 executeScript("return arguments[0].value", displayText));
 
-        localePicker = $(TestBenchElement.class)
+        localePicker = $(DatePickerElement.class)
                 .id("french-locale-date-picker");
         displayText = localePicker.$(TestBenchElement.class).id("input");
 
@@ -52,9 +53,9 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
         Assert.assertThat(logs.get(0).getMessage(), CoreMatchers.containsString(
                 "deprecation - Styling master document from stylesheets defined in HTML Imports is deprecated"));
 
-        localePicker = $(TestBenchElement.class)
+        localePicker = $(DatePickerElement.class)
                 .id("german-locale-date-picker");
-        executeScript("arguments[0].value = '10.01.1985'", localePicker);
+        localePicker.setProperty("value", "10.01.1985");
 
         logs = getWaringEntries();
 
