@@ -1,7 +1,5 @@
 package com.vaadin.flow.component.datepicker;
 
-import java.util.logging.Level;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -41,14 +39,13 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
     public void hungarianLocaleTest() {
         open();
 
-        Assert.assertEquals("There should not error in the console", 0, getLogEntries(Level.SEVERE).size());
+        checkLogsForErrors();
         WebElement hungarianPicker = findElement(
                 By.id("hungarian-locale-date-picker"));
         // trigger the validation on the from clientside
         hungarianPicker.click();
         executeScript("document.body.click()");
 
-        Assert.assertEquals("There should not error in the console", 0,
-                getLogEntries(Level.SEVERE).size());
+        checkLogsForErrors();
     }
 }
