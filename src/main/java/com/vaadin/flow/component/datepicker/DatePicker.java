@@ -264,6 +264,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      *
      * @return the locale used for this picker
      */
+    @Override
     public Locale getLocale() {
         return locale;
     }
