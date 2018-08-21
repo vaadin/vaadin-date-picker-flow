@@ -1,3 +1,24 @@
+class FlowDatePickerPart {
+    constructor(initial) {
+        this.initial = initial;
+        this.index = 0;
+        this.value = 0;
+    }
+    setIndex(testString) {
+        this.index = testString.indexOf(day);
+    }
+
+    static compare(part1, part2) {
+        if (part1.index < part2.index) {
+            return -1;
+        }
+        if (part1.index > part2.index) {
+            return 1;
+        }
+        return 0;
+    }
+}
+
 window.Vaadin.Flow.datepickerConnector = {
     initLazy: function (datepicker) {
         // Check whether the connector was already initialized for the datepicker
@@ -59,8 +80,11 @@ window.Vaadin.Flow.datepickerConnector = {
         
         const getInputValue = function () {
             let inputValue = '';
-            if (datepicker.value) {
-                inputValue = datepicker._inputValue || '';                
+            try {
+                inputValue = datepicker._inputValue;
+            } catch(err) {
+                /* component not ready: falling back to stored value */
+                inputValue = datepicker.value || '';
             }
             return inputValue;
         }
@@ -74,59 +98,49 @@ window.Vaadin.Flow.datepickerConnector = {
                 console.warn("The locale is not supported, use default locale setting(en-US).");
             }
 
+            /* init helper parts for reverse-engineering date-regex */
+            datepicker.$connector.dayPart = new FlowDatePickerPart("22");
+            datepicker.$connector.monthPart = new FlowDatePickerPart("11");
+            datepicker.$connector.yearPart = new FlowDatePickerPart("1987");
+            datepicker.$connector.parts = [datepicker.$connector.dayPart, datepicker.$connector.monthPart, datepicker.$connector.yearPart];
+
+            /* create test-string where to extract parsing regex */
+            var testDate = new Date(datepicker.$connector.yearPart.initial, datepicker.$connector.monthPart.initial - 1, datepicker.$connector.dayPart.initial);
+            var testString = cleanString(testDate.toLocaleDateString(locale));
+            datepicker.$connector.parts.forEach(function (part) {
+                part.index = testString.indexOf(part.initial);
+            });
+            /* sort items to match correct places in regex groups */
+            datepicker.$connector.parts.sort(FlowDatePickerPart.compare);
+            /* create regex */
+            datepicker.$connector.regex = testString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&').replace(datepicker.$connector.dayPart.initial, "(\\d{1,2})").replace(datepicker.$connector.monthPart.initial, "(\\d{1,2})").replace(datepicker.$connector.yearPart.initial, "(\\d{4})");
+
+
             datepicker.i18n.formatDate = function (date) {
                 let rawDate = new Date(date.year, date.month, date.day);
                 return cleanString(rawDate.toLocaleDateString(locale));
             };
 
             datepicker.i18n.parseDate = function (dateString) {
+                dateString = cleanString(dateString);
+
                 if (dateString.length == 0) {
                     return;
                 }
 
-                //checking separator which is used in the date
-                let regexMatcher = /[0-9]+(.\s?)[0-9]+\1[0-9]+\1?/;
-                let match = regexMatcher.exec(dateString);
-
-                if (match === null || match.length != 2) {
-                    console.error("There was an error when getting the separator for given date string.");
-                    return null;
-                } else {
-                    var separator = match[1];
+                var match = dateString.match(datepicker.$connector.regex);
+                if (match && match.length == 4) {
+                    for (var i = 1; i < 4; i++) {
+                        datepicker.$connector.parts[i-1].value = match[i]
+                    }
+                    return {
+                        day: datepicker.$connector.dayPart.value,
+                        month: datepicker.$connector.monthPart.value - 1,
+                        year: datepicker.$connector.yearPart.value
+                    };
+                }  else {
+                    return false;
                 }
-
-                const sample = ["2009", "12", "31"].join(separator);
-                const sample_parts = sample.split(separator);
-                let targetLocaleDate = cleanString(new Date(2009,11,31).toLocaleDateString(oldLocale).toString());
-
-                let date;
-                if (targetLocaleDate.startsWith(sample)) {
-                    //Date format "YYYY/MM/DD"
-                    const parts = dateString.split(separator);
-                    // #108: With Firefox, the Date object does not accept date string with dots,
-                    //dots and space and more as a separator, so date = new Date(dateString) has been replaced
-                    date = new Date(parts[0], parts[1] - 1, parts[2]);
-                } else if (targetLocaleDate.startsWith(sample.split(separator).reverse().join(separator))) {
-                    //Date format "DD/MM/YYYY"
-                    const parts = dateString.split(separator);
-                    date = new Date(parts[2], parts[1] - 1, parts[0]);
-                } else if (targetLocaleDate.startsWith([sample_parts[1], sample_parts[2], sample_parts[0]].join(separator))) {
-                    //Date format "MM/DD/YYYY"
-                    const parts = dateString.split(separator);
-                    date = new Date(parts[2], parts[0] - 1, parts[1]);
-                } else {
-                    console.warn("Selected locale is using unsupported date format, which might affect the parsing date.");
-                    const parts = dateString.split(separator);
-                    date = new Date(parts[0], parts[1] - 1, parts[2]);
-                }
-
-                oldLocale = locale;
-
-                return {
-                    day: date.getDate(),
-                    month: date.getMonth(),
-                    year: date.getFullYear()
-                };
             };
 
             let inputValue = getInputValue();
