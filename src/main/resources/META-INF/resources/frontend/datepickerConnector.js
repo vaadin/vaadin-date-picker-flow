@@ -1,3 +1,4 @@
+/* helper class for parsing regex from formatted date string */
 class FlowDatePickerPart {
     constructor(initial) {
         this.initial = initial;
@@ -48,36 +49,6 @@ window.Vaadin.Flow.datepickerConnector = {
             return string.replace(/[^\x00-\x7F]/g, "");
         };
 
-        // Create a Date from our dateObject that doesn't contain setters/getters
-        const generateDate = function (dateObject) {
-            let dateString = `${dateObject.year}-${dateObject.month + 1}-${dateObject.day}`;
-            var parts = /^([-+]\d{1}|\d{2,4}|[-+]\d{6})-(\d{1,2})-(\d{1,2})$/.exec(dateString);
-            if (!parts) {
-                console.warn("Couldn't parse generated date string.");
-                return;
-            }
-
-            // Wrong date (1900-01-01), but with midnight in local time
-            var date = new Date(0, 0);
-            date.setFullYear(parseInt(parts[1], 10));
-            date.setMonth(parseInt(parts[2], 10) - 1);
-            date.setDate(parseInt(parts[3], 10));
-
-            return date;
-        };
-
-        const updateFormat = function () {
-            let inputValue = getInputValue();
-            if (inputValue !== "" && datepicker.i18n.parseDate) {
-                let selectedDate = datepicker.i18n.parseDate(inputValue);
-                if (!selectedDate) {
-                    return;
-                }
-
-                datepicker._selectedDate = selectedDate && generateDate(selectedDate);
-            }
-        };
-        
         const getInputValue = function () {
             let inputValue = '';
             try {
@@ -98,6 +69,13 @@ window.Vaadin.Flow.datepickerConnector = {
                 console.warn("The locale is not supported, use default locale setting(en-US).");
             }
 
+            let currentDate = false;
+            let inputValue = getInputValue();
+            if (datepicker.i18n.parseDate !== 'undefined' && inputValue) {
+                /* get current date with old parsing */
+                currentDate = datepicker.i18n.parseDate(inputValue);
+            }
+
             /* init helper parts for reverse-engineering date-regex */
             datepicker.$connector.dayPart = new FlowDatePickerPart("22");
             datepicker.$connector.monthPart = new FlowDatePickerPart("11");
@@ -105,8 +83,8 @@ window.Vaadin.Flow.datepickerConnector = {
             datepicker.$connector.parts = [datepicker.$connector.dayPart, datepicker.$connector.monthPart, datepicker.$connector.yearPart];
 
             /* create test-string where to extract parsing regex */
-            var testDate = new Date(datepicker.$connector.yearPart.initial, datepicker.$connector.monthPart.initial - 1, datepicker.$connector.dayPart.initial);
-            var testString = cleanString(testDate.toLocaleDateString(locale));
+            let testDate = new Date(datepicker.$connector.yearPart.initial, datepicker.$connector.monthPart.initial - 1, datepicker.$connector.dayPart.initial);
+            let testString = cleanString(testDate.toLocaleDateString(locale));
             datepicker.$connector.parts.forEach(function (part) {
                 part.index = testString.indexOf(part.initial);
             });
@@ -128,9 +106,9 @@ window.Vaadin.Flow.datepickerConnector = {
                     return;
                 }
 
-                var match = dateString.match(datepicker.$connector.regex);
+                let match = dateString.match(datepicker.$connector.regex);
                 if (match && match.length == 4) {
-                    for (var i = 1; i < 4; i++) {
+                    for (let i = 1; i < 4; i++) {
                         datepicker.$connector.parts[i-1].value = match[i]
                     }
                     return {
@@ -143,11 +121,13 @@ window.Vaadin.Flow.datepickerConnector = {
                 }
             };
 
-            let inputValue = getInputValue();
             if (inputValue === "") {
                 oldLocale = locale;
             } else {
-                updateFormat();
+                if (currentDate) {
+                    /* set current date to invoke use of new locale */
+                    datepicker._selectedDate = new Date(currentDate.year, currentDate.month, currentDate.day);
+                }
             }
         }
     }
