@@ -5,9 +5,6 @@ class FlowDatePickerPart {
         this.index = 0;
         this.value = 0;
     }
-    setIndex(testString) {
-        this.index = testString.indexOf(day);
-    }
 
     static compare(part1, part2) {
         if (part1.index < part2.index) {
