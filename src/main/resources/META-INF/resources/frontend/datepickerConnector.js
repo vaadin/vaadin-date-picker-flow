@@ -26,6 +26,12 @@ window.Vaadin.Flow.datepickerConnector = {
 
         datepicker.$connector = {};
 
+        /* init helper parts for reverse-engineering date-regex */
+        datepicker.$connector.dayPart = new FlowDatePickerPart("22");
+        datepicker.$connector.monthPart = new FlowDatePickerPart("11");
+        datepicker.$connector.yearPart = new FlowDatePickerPart("1987");
+        datepicker.$connector.parts = [datepicker.$connector.dayPart, datepicker.$connector.monthPart, datepicker.$connector.yearPart];
+
         // Old locale should always be the default vaadin-date-picker component
         // locale {English/US} as we init lazily and the date-picker formats
         // the date using the default i18n settings and we need to use the input
@@ -73,12 +79,6 @@ window.Vaadin.Flow.datepickerConnector = {
                 currentDate = datepicker.i18n.parseDate(inputValue);
             }
 
-            /* init helper parts for reverse-engineering date-regex */
-            datepicker.$connector.dayPart = new FlowDatePickerPart("22");
-            datepicker.$connector.monthPart = new FlowDatePickerPart("11");
-            datepicker.$connector.yearPart = new FlowDatePickerPart("1987");
-            datepicker.$connector.parts = [datepicker.$connector.dayPart, datepicker.$connector.monthPart, datepicker.$connector.yearPart];
-
             /* create test-string where to extract parsing regex */
             let testDate = new Date(datepicker.$connector.yearPart.initial, datepicker.$connector.monthPart.initial - 1, datepicker.$connector.dayPart.initial);
             let testString = cleanString(testDate.toLocaleDateString(locale));
@@ -87,9 +87,19 @@ window.Vaadin.Flow.datepickerConnector = {
             });
             /* sort items to match correct places in regex groups */
             datepicker.$connector.parts.sort(FlowDatePickerPart.compare);
-            /* create regex */
+            /* create regex
+             * regex will be the date, so that:
+             * - day-part is '(\d{1,2})' (1 or 2 digits),
+             * - month-part is '(\d{1,2})' (1 or 2 digits),
+             * - year-part is '(\d{4})' (4 digits)
+             *
+             * and everything else is left as is.
+             * For example, us date "10/20/2010" => "(\d{1,2})/(\d{1,2})/(\d{4})".
+             *
+             * The sorting part solves that which part is which (for example,
+             * here the first part is month, second day and third year)
+             *  */
             datepicker.$connector.regex = testString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&').replace(datepicker.$connector.dayPart.initial, "(\\d{1,2})").replace(datepicker.$connector.monthPart.initial, "(\\d{1,2})").replace(datepicker.$connector.yearPart.initial, "(\\d{4})");
-
 
             datepicker.i18n.formatDate = function (date) {
                 let rawDate = new Date(date.year, date.month, date.day);
@@ -106,7 +116,7 @@ window.Vaadin.Flow.datepickerConnector = {
                 let match = dateString.match(datepicker.$connector.regex);
                 if (match && match.length == 4) {
                     for (let i = 1; i < 4; i++) {
-                        datepicker.$connector.parts[i-1].value = match[i]
+                        datepicker.$connector.parts[i-1].value = parseInt(match[i]);
                     }
                     return {
                         day: datepicker.$connector.dayPart.value,
@@ -120,11 +130,9 @@ window.Vaadin.Flow.datepickerConnector = {
 
             if (inputValue === "") {
                 oldLocale = locale;
-            } else {
-                if (currentDate) {
+            } else if (currentDate) {
                     /* set current date to invoke use of new locale */
                     datepicker._selectedDate = new Date(currentDate.year, currentDate.month, currentDate.day);
-                }
             }
         }
     }
