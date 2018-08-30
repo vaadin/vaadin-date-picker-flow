@@ -65,6 +65,9 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
         assertText($(DatePickerElement.class).id("korean-locale-date-picker"),
                 "2018. 5. 3.");
 
+        assertText($(DatePickerElement.class).id("polish-locale-date-picker"),
+                "3.05.2018");
+
     }
 
     private void assertText(DatePickerElement datePickerElement,
