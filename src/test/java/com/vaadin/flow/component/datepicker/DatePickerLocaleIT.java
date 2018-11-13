@@ -81,7 +81,9 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
     private List<LogEntry> getWarningEntries() {
         LogEntries logs = driver.manage().logs().get("browser");
         return logs.getAll().stream()
-                .filter(log -> log.getLevel().equals(Level.WARNING))
+                .filter(log -> log.getLevel().equals(Level.WARNING) )
+                .filter(log -> !log.getMessage()
+                        .contains("HTML Imports is deprecated"))
                 .collect(Collectors.toList());
     }
 
