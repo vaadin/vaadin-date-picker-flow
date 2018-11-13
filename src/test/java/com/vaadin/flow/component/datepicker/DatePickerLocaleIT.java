@@ -48,9 +48,6 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
         Assert.assertTrue("No warnings should have appeared in the logs",
                 logs.isEmpty());
 
-        Assert.assertThat(logs.get(0).getMessage(), CoreMatchers.containsString(
-                "deprecation - Styling master document from stylesheets defined in HTML Imports is deprecated"));
-
         localePicker = $(DatePickerElement.class)
                 .id("german-locale-date-picker");
         localePicker.setDate(LocalDate.of(1985,1,10));
