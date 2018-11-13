@@ -44,11 +44,9 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
                 "03/05/2018");
 
         List<LogEntry> logs = getWarningEntries();
-        Assert.assertEquals(
-                "Expected only [Deprecation] warning should be in the logs", 1,
-                logs.size());
-        Assert.assertThat(logs.get(0).getMessage(), CoreMatchers.containsString(
-                "deprecation - Styling master document from stylesheets defined in HTML Imports is deprecated"));
+
+        Assert.assertTrue("No warnings should have appeared in the logs",
+                logs.isEmpty());
 
         localePicker = $(DatePickerElement.class)
                 .id("german-locale-date-picker");
@@ -57,7 +55,7 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
 
         logs = getWarningEntries();
 
-        Assert.assertTrue("No new warnings should have appeared in the logs",
+        Assert.assertTrue("No warnings should have appeared in the logs",
                 logs.isEmpty());
 
         assertText(localePicker, "10.1.1985");
@@ -81,7 +79,9 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
     private List<LogEntry> getWarningEntries() {
         LogEntries logs = driver.manage().logs().get("browser");
         return logs.getAll().stream()
-                .filter(log -> log.getLevel().equals(Level.WARNING))
+                .filter(log -> log.getLevel().equals(Level.WARNING) )
+                .filter(log -> !log.getMessage()
+                        .contains("HTML Imports is deprecated"))
                 .collect(Collectors.toList());
     }
 
