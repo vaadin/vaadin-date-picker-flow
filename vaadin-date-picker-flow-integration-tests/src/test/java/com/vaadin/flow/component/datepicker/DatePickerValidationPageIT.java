@@ -104,15 +104,15 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
 
     @Test
     public void invalidLocale() {
-        String logList = getLogEntries(Level.WARNING).toString();
+        String logList = getLogEntries(Level.ALL).toString();
         Assert.assertFalse(logList.contains(
-                "The locale is not supported, use default locale setting(en-US)."));
+                "The locale is not supported, using default locale setting(en-US)."));
 
         WebElement changeLocale = findElement(By.id("change-locale"));
         scrollIntoViewAndClick(changeLocale);
 
-        waitUntil(driver -> getLogEntries(Level.WARNING).toString().contains(
-                "The locale is not supported, use default locale setting(en-US)."));
+        waitUntil(driver -> getLogEntries(Level.INFO).toString().contains(
+                "The locale is not supported, using default locale setting(en-US)."));
         WebElement picker = findElement(By.id("field"));
         WebElement displayText = findInShadowRoot(picker, By.id("input")).get(0);
 

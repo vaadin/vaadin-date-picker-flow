@@ -72,15 +72,15 @@ window.Vaadin.Flow.datepickerConnector = {
             //
             if (locale.search("lvariant") >= 0){
                 locale = "en-US";
-                console.warn("The locale is not supported, use default locale setting(en-US).")
-            }
-
-            try {
-                // Check whether the locale is supported or not
-                new Date().toLocaleDateString(locale);
-            } catch (e) {
-                locale = "en-US";
-                console.warn("The locale is not supported, use default locale setting(en-US).");
+                console.info("The locale is not supported, using default locale setting(en-US).")
+            } else {
+                try {
+                     // Check whether the locale is supported or not
+                     new Date().toLocaleDateString(locale);
+                } catch (e) {
+                    locale = "en-US";
+                    console.warn("The locale is not supported, using default locale setting(en-US).");
+                }
             }
 
             let currentDate = false;
