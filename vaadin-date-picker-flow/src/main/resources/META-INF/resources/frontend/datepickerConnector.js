@@ -73,6 +73,7 @@ window.Vaadin.Flow.datepickerConnector = {
             // got fixed.
             //
             if (locale.search("lvariant") >= 0){
+                locale = "en-US";
                 console.warn("The locale is not supported, use default locale setting(en-US).")
             }
 
