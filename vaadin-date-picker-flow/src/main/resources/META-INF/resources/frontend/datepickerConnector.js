@@ -69,6 +69,9 @@ window.Vaadin.Flow.datepickerConnector = {
             // behave in a wrong way.
             // This has been caught by DatePickerValidationPage test when running in Chrome 73.
             //
+            // Remove the following workaround after bug https://bugs.chromium.org/p/chromium/issues/detail?id=943544
+            // got fixed.
+            //
             if (locale.search("lvariant") >= 0){
                 console.warn("The locale is not supported, use default locale setting(en-US).")
             }
