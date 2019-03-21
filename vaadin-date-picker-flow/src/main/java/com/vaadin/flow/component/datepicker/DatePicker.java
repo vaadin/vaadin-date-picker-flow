@@ -262,7 +262,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
         // Chrome(73+)/FireFox(66)/Edge(42.17134).
         if(!locale.toLanguageTag().contains("lvariant")){
             languageTag = locale.toLanguageTag();
-        } else if ("".equals(locale.getCountry())){
+        } else if (locale.getCountry().isEmpty()){
             languageTag = locale.getLanguage();
         } else {
             languageTag = locale.getLanguage() + "-" + locale.getCountry();
