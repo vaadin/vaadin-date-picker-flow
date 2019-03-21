@@ -64,23 +64,13 @@ window.Vaadin.Flow.datepickerConnector = {
         }
 
         datepicker.$connector.setLocale = function (locale) {
-            // For ill-formed locales, the backend Locale.toLanguageTag() will
-            // append subtag "lvariant" to it, which will cause the Date().toLocaleDateString()
-            // fallback to the system default locale.
-            // This has been caught by DatePickerValidationPage test when running on
-            // Chrome(73+)/FireFox(66)/Edge(42.17134).
-            //
-            if (locale.search("lvariant") >= 0){
+
+            try {
+                // Check whether the locale is supported or not
+                new Date().toLocaleDateString(locale);
+            } catch (e) {
                 locale = "en-US";
-                console.info("The locale is not supported, using default locale setting(en-US).")
-            } else {
-                try {
-                     // Check whether the locale is supported or not
-                     new Date().toLocaleDateString(locale);
-                } catch (e) {
-                    locale = "en-US";
-                    console.warn("The locale is not supported, using default locale setting(en-US).");
-                }
+                console.warn("The locale is not supported, using default locale setting(en-US).");
             }
 
             let currentDate = false;

@@ -18,6 +18,7 @@ package com.vaadin.flow.component.datepicker;
 import java.util.logging.Level;
 import java.util.stream.IntStream;
 
+import com.google.common.base.Strings;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +26,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
-import com.google.common.base.Strings;
 import com.vaadin.flow.testutil.AbstractComponentIT;
 import com.vaadin.flow.testutil.TestPath;
 
@@ -44,6 +44,7 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
 
     @Before
     public void init() {
+
         open();
         waitForElementPresent(By.id("field"));
         field = findElement(By.id("field"));
@@ -104,14 +105,14 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
 
     @Test
     public void invalidLocale() {
-        String logList = getLogEntries(Level.ALL).toString();
+        String logList = getLogEntries(Level.WARNING).toString();
         Assert.assertFalse(logList.contains(
                 "The locale is not supported, using default locale setting(en-US)."));
 
         WebElement changeLocale = findElement(By.id("change-locale"));
         scrollIntoViewAndClick(changeLocale);
 
-        waitUntil(driver -> getLogEntries(Level.INFO).toString().contains(
+        waitUntil(driver -> getLogEntries(Level.WARNING).toString().contains(
                 "The locale is not supported, using default locale setting(en-US)."));
         WebElement picker = findElement(By.id("field"));
         WebElement displayText = findInShadowRoot(picker, By.id("input")).get(0);
