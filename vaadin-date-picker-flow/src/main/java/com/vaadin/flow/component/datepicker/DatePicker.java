@@ -373,6 +373,28 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
         return isInvalidBoolean();
     }
 
+    /**
+     * Set to <code>false</code> to hide the clear button which clears the datepicker.
+     *
+     * @param clearButtonVisible
+     *            <code>true</code> to set the button visible,
+     *            <code>false</code> otherwise
+     */
+    @Override
+    public void setClearButtonVisible(boolean clearButtonVisible) {
+        super.setClearButtonVisible(clearButtonVisible);
+    }
+
+    /**
+     * Gets the visibility state of the button which clears the datepicker.
+     *
+     * @return <code>true</code> if the button is visible, <code>false</code>
+     *         otherwise
+     */
+    public boolean isClearButtonVisible() {
+        return isClearButtonVisibleBoolean();
+    }
+
     @Override
     public void setLabel(String label) {
         super.setLabel(label);

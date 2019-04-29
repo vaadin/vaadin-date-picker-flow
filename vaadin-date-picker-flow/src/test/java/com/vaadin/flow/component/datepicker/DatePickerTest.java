@@ -111,4 +111,19 @@ public class DatePickerTest {
         assertFalse(OPENED_PROPERTY_NOT_UPDATED, picker.isOpened());
     }
 
+    @Test
+    public void clearButtonVisiblePropertyValue() {
+        DatePicker picker = new DatePicker();
+
+        assertClearButtonPropertyValueEquals(picker, true);
+        assertClearButtonPropertyValueEquals(picker, false);
+    }
+
+    public void assertClearButtonPropertyValueEquals(DatePicker picker, Boolean value) {
+        picker.setClearButtonVisible(value);
+        assertEquals(value, picker.isClearButtonVisible());
+        assertEquals(picker.isClearButtonVisible(),
+                picker.getElement().getProperty("clearButtonVisible", value));
+    }
+
 }
