@@ -115,6 +115,8 @@ public class DatePickerTest {
     public void clearButtonVisiblePropertyValue() {
         DatePicker picker = new DatePicker();
 
+        assertFalse("Clear button should not be visible by default",
+                picker.isClearButtonVisible());
         assertClearButtonPropertyValueEquals(picker, true);
         assertClearButtonPropertyValueEquals(picker, false);
     }
