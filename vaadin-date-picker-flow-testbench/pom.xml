@@ -9,7 +9,7 @@
         <version>2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>vaadin-date-picker-flow-testbench</artifactId>
+    <artifactId>vaadin-date-picker-testbench</artifactId>
     <packaging>jar</packaging>
 
     <name>Vaadin DatePicker Testbench API</name>
