@@ -1,3 +1,19 @@
+// Error handling functions
+const tryCatchWrapper = function(originalFunction) {
+    return function() {
+        try {
+            originalFunction.apply(this, arguments);
+        } catch (error) {
+            logError(error.message);
+        }
+    }
+}
+
+function logError(message) {
+    console.error("There seems to be an error in the DatePicker:\n" + message + "\n" +
+       "Please submit an issue to https://github.com/vaadin/vaadin-date-picker-flow/issues/new!");
+}
+
 /* helper class for parsing regex from formatted date string */
 
 class FlowDatePickerPart {
@@ -18,7 +34,7 @@ class FlowDatePickerPart {
     }
 }
 window.Vaadin.Flow.datepickerConnector = {
-    initLazy: function (datepicker) {
+    initLazy: tryCatchWrapper(function (datepicker) {
         // Check whether the connector was already initialized for the datepicker
         if (datepicker.$connector) {
             return;
@@ -38,21 +54,21 @@ window.Vaadin.Flow.datepickerConnector = {
         // value as we may need to parse user input so we can't use the _selectedDate value.
         let oldLocale = "en-us";
 
-        datepicker.addEventListener('blur', e => {
+        datepicker.addEventListener('blur', tryCatchWrapper(e => {
             if (!e.target.value && e.target.invalid) {
                 console.warn("Invalid value in the DatePicker.");
             }
-        });
+        }));
 
-        const cleanString = function (string) {
+        const cleanString = tryCatchWrapper(function (string) {
             // Clear any non ascii characters from the date string,
             // mainly the LEFT-TO-RIGHT MARK.
             // This is a problem for many Microsoft browsers where `toLocaleDateString`
             // adds the LEFT-TO-RIGHT MARK see https://en.wikipedia.org/wiki/Left-to-right_mark
             return string.replace(/[^\x00-\x7F]/g, "");
-        };
+        });
 
-        const getInputValue = function () {
+        const getInputValue = tryCatchWrapper(function () {
             let inputValue = '';
             try {
                 inputValue = datepicker._inputValue;
@@ -61,9 +77,9 @@ window.Vaadin.Flow.datepickerConnector = {
                 inputValue = datepicker.value || '';
             }
             return inputValue;
-        }
+        });
 
-        datepicker.$connector.setLocale = function (locale) {
+        datepicker.$connector.setLocale = tryCatchWrapper(function (locale) {
 
             try {
                 // Check whether the locale is supported or not
@@ -135,6 +151,6 @@ window.Vaadin.Flow.datepickerConnector = {
                     /* set current date to invoke use of new locale */
                     datepicker._selectedDate = new Date(currentDate.year, currentDate.month, currentDate.day);
             }
-        }
-    }
+        })
+    })
 }
