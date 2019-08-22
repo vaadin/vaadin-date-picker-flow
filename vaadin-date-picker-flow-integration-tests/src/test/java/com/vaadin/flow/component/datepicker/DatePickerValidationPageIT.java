@@ -85,7 +85,6 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
         assertValid();
         assertServerValueField("2018-01-01");
         setValue("asfda");
-        assertInvalid();
         assertServerValueField("null");
         setValue("1/2/2018");
         assertValid();
