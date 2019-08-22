@@ -189,7 +189,7 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
         // min is 2017-4-5
         final LocalDate invalidDate = LocalDate.of(2017, 4, 1);
         final LocalDate validDate = LocalDate.of(2017, 12, 31);
-        assertInvalidAfterClientChange("max", invalidDate, validDate);
+        assertInvalidAfterClientChange("min", invalidDate, validDate);
     }
 
     private void assertInvalidAfterClientChange(String clientPropertyUnderTest,
