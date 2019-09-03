@@ -220,11 +220,11 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
     }
 
     private void assertValidStateOfPickerWithValidRange(boolean valid) {
-        final WebElement checkIsInvalid = findElement(By.id("check-is-invalid"));
+        final WebElement checkIsInvalid = $("#check-is-invalid").first();
         checkIsInvalid.click();
 
         final String expectedValue = !valid ? "invalid" : "valid";
-        Assert.assertEquals(expectedValue, findElement(By.id("is-invalid")).getText());
+        Assert.assertEquals(expectedValue, $("#is-invalid").first().getText());
     }
 
     private void assertInvalid() {
@@ -247,7 +247,7 @@ public class DatePickerValidationPageIT extends AbstractComponentIT {
     }
 
     private void assertServerValueField(String text) {
-        assertTrue(findElement(By.id("server-side-value")).getText()
+        assertTrue($("#server-side-value").first().getText()
                 .contains(text));
     }
 
