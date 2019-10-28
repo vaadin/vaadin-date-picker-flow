@@ -502,9 +502,9 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
     }
 
     @Override
-    public void setRequiredIndicatorVisible(boolean requiredIndicatorVisible) {
+    public void setRequiredIndicatorVisible(boolean required) {
         super.setRequiredIndicatorVisible(required);
-        this.required = requiredIndicatorVisible;
+        this.required = required;
     }
 
     /**
