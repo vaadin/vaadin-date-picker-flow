@@ -1201,8 +1201,8 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
                 modelToPresentation);
         if (initialValue != null) {
             setModelValue(initialValue, false);
-            setPresentationValue(initialValue);
         }
+       setPresentationValue(initialValue);
     }
 
     /**
