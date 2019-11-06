@@ -84,7 +84,6 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      */
     public DatePicker(LocalDate initialDate) {
         super(initialDate, null, String.class, PARSER, FORMATTER);
-        getElement().synchronizeProperty("invalid", "invalid-changed");
         setLocale(UI.getCurrent().getLocale());
 
         // workaround for https://github.com/vaadin/flow/issues/3496
@@ -93,7 +92,9 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
         addValueChangeListener(e -> validate());
 
         addAttachListener(e ->
-                getElement().executeJs("$0.validate = function () {return this.checkValidity();}",
+                getElement().executeJs("$0.validate = function (value) {" +
+                                "value = value !== undefined ? value : this._inputValue;" +
+                                "return this.checkValidity(value);}",
                         getElement()));
     }
 
