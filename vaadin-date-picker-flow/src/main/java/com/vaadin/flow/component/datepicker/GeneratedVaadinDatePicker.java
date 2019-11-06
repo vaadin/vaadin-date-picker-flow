@@ -947,14 +947,10 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
      * </p>
      * <p>
      * This property is set to true when the control value invalid.
-     * <p>
-     * This property is synchronized automatically from client side when a
-     * 'invalid-changed' event happens.
      * </p>
      *
      * @return the {@code invalid} property from the webcomponent
      */
-    @Synchronize(property = "invalid", value = "invalid-changed")
     protected boolean isInvalidBoolean() {
         return getElement().getProperty("invalid", false);
     }
@@ -1201,8 +1197,8 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
                 modelToPresentation);
         if (initialValue != null) {
             setModelValue(initialValue, false);
+            setPresentationValue(initialValue);
         }
-       setPresentationValue(initialValue);
     }
 
     /**
