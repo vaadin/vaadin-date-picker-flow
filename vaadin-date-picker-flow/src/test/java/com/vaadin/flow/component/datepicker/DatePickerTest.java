@@ -52,7 +52,7 @@ public class DatePickerTest {
         DatePicker picker = new DatePicker();
 
         assertEquals(null, picker.getValue());
-        assertEquals("", picker.getElement().getProperty("value"));
+        assertFalse(picker.getElement().hasProperty("value"));
 
         picker.setValue(LocalDate.of(2018, 4, 25));
         assertEquals("2018-04-25", picker.getElement().getProperty("value"));
@@ -67,12 +67,10 @@ public class DatePickerTest {
     }
 
     @Test
-    public void defaultCtor_sets_empty_value() {
+    public void defaultCtor_does_not_update_values() {
         DatePicker picker = new DatePicker();
         assertNull(picker.getValue());
-        // The constructor needs to set the value to empty to avoid triggering
-        // an update when the component is loaded
-        assertEquals("", picker.getElement().getProperty("value"));
+        assertEquals(null, picker.getElement().getProperty("value"));
     }
 
     @Test
