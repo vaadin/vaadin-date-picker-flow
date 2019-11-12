@@ -2,6 +2,7 @@ package com.vaadin.flow.component.datepicker;
 
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.router.Route;
 
 import javax.validation.constraints.NotNull;
@@ -20,11 +21,12 @@ public class BinderValidationView extends Div {
         dateField.setMin(LocalDate.of(2019, 1, 1));
 
         // Set invalid indicator label
-        dateField.getElement().addPropertyChangeListener("invalid", event -> {
-            String label = dateField.getElement().getProperty("invalid", false)
+        Element dateFieldElement = dateField.getElement();
+        dateFieldElement.addPropertyChangeListener("invalid", event -> {
+            String label = dateFieldElement.getProperty("invalid", false)
                     ? "invalid"
                     : "valid";
-            dateField.getElement().setProperty("label", label == null ? "" : label);
+            dateFieldElement.setProperty("label", label == null ? "" : label);
         });
 
         binder.forField(dateField).withValidator(value -> value != null &&
