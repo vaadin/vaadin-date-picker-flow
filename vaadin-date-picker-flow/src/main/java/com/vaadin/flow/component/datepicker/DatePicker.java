@@ -91,11 +91,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
 
         addValueChangeListener(e -> validate());
 
-        addAttachListener(e ->
-                getElement().executeJs("$0.validate = function (value) {" +
-                                "value = value !== undefined ? value : this._inputValue;" +
-                                "return this.checkValidity(value);}",
-                        getElement()));
+        FieldValidationUtil.disableClientValidation(this);
     }
 
     /**
