@@ -41,10 +41,10 @@ final class FieldValidationUtil {
     private static void overrideClientValidation(Component component) {
         PendingJavaScriptResult javaScriptResult =
                 component.getElement()
-                        .executeJs("$0.validate = function (value) {" +
+                        .executeJs("this.validate = function (value) {" +
                             "value = value !== undefined ? value : this._inputValue;" +
-                            "return this.checkValidity(value);}",
-                                component.getElement());
+                            "return this.checkValidity(value);};" +
+                            "this._validateInput = function (date, min, max) {}");
 
         javaScriptResult.then(result -> {
             if (component instanceof HasValidation && ((HasValidation) component).isInvalid()) {
@@ -57,8 +57,7 @@ final class FieldValidationUtil {
                 // was disabled) and the server side thinks the value is invalid. This will lead to
                 // strange behavior until the two states are synchronized again. To avoid this, we will
                 // explicitly change the client side value if the server side is invalid.
-                component.getElement().executeJs("$0.invalid = true",
-                        component.getElement());
+                component.getElement().executeJs("this.invalid = true");
             }
         });
     }
