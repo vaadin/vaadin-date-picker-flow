@@ -21,10 +21,11 @@ public class BinderValidationView extends Div {
         dateField.setMin(LocalDate.of(2019, 1, 1));
 
         // Set invalid indicator label
+        String invalidString = "invalid";
         Element dateFieldElement = dateField.getElement();
-        dateFieldElement.addPropertyChangeListener("invalid", event -> {
-            String label = dateFieldElement.getProperty("invalid", false)
-                    ? "invalid"
+        dateFieldElement.addPropertyChangeListener(invalidString, event -> {
+            String label = dateFieldElement.getProperty(invalidString, false)
+                    ? invalidString
                     : "valid";
             dateFieldElement.setProperty("label", label == null ? "" : label);
         });
