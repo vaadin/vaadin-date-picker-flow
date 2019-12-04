@@ -45,9 +45,9 @@
 
             datepicker.addEventListener('blur', tryCatchWrapper(e => {
                 if (!e.target.value && e.target.invalid) {
-                console.warn("Invalid value in the DatePicker.");
-            }
-        }));
+                    console.warn("Invalid value in the DatePicker.");
+                }
+            }));
 
             const cleanString = tryCatchWrapper(function (string) {
                 // Clear any non ascii characters from the date string,
@@ -66,7 +66,7 @@
                     inputValue = datepicker.value || '';
                 }
                 return inputValue;
-            })
+            });
 
             datepicker.$connector.setLocale = tryCatchWrapper(function (locale) {
 
@@ -107,12 +107,12 @@
                 *  */
                 datepicker.$connector.regex = testString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&').replace(datepicker.$connector.dayPart.initial, "(\\d{1,2})").replace(datepicker.$connector.monthPart.initial, "(\\d{1,2})").replace(datepicker.$connector.yearPart.initial, "(\\d{4})");
 
-                datepicker.i18n.formatDate = function (date) {
+                datepicker.i18n.formatDate = tryCatchWrapper(function (date) {
                     let rawDate = new Date(Date.UTC(date.year, date.month, date.day));
                     return cleanString(rawDate.toLocaleDateString(locale, { timeZone: 'UTC' }));
-                };
+                });
 
-                datepicker.i18n.parseDate = function (dateString) {
+                datepicker.i18n.parseDate = tryCatchWrapper(function (dateString) {
                     dateString = cleanString(dateString);
 
                     if (dateString.length == 0) {
@@ -132,7 +132,7 @@
                     }  else {
                         return false;
                     }
-                };
+                });
 
                 if (inputValue === "") {
                     oldLocale = locale;
@@ -140,7 +140,7 @@
                     /* set current date to invoke use of new locale */
                     datepicker._selectedDate = new Date(currentDate.year, currentDate.month, currentDate.day);
                 }
-            })
+            });
         })
-    }
+    };
 })();
