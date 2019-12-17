@@ -97,9 +97,9 @@ package com.vaadin.flow.component.datepicker;
             datePicker.setEnabled(false);
             // end-source-example
 
-            datePicker.addValueChangeListener(event -> {
-                message.setText("This event should not have happened");
-            });
+            datePicker.addValueChangeListener(event ->
+                message.setText("This event should not have happened")
+            );
 
             datePicker.setId("disabled-picker");
             addCard("Disabled date picker", datePicker, message);

@@ -144,9 +144,9 @@ public class DatePickerView extends DemoView {
         binder.forField(datePicker).asRequired("Please choose a date")
                 .bind(Person::getBirthDate, Person::setBirthDate);
 
-        Button button = new Button("Submit", event -> {
-            binder.validate();
-        });
+        Button button = new Button("Submit", event ->
+            binder.validate()
+        );
         // end-source-example
 
         VerticalLayout verticalLayout = new VerticalLayout();
