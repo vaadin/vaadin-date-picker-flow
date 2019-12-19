@@ -59,7 +59,7 @@ package com.vaadin.flow.component.datepicker;
             DatePicker datePicker = new DatePicker();
 
             datePicker.addValueChangeListener(
-                    event -> UpdateMessage(message, datePicker));
+                    event -> updateMessage(message, datePicker));
             // end-source-example
 
             datePicker.setId("simple-picker");
@@ -81,7 +81,7 @@ package com.vaadin.flow.component.datepicker;
             datePicker.setMax(now.withDayOfMonth(now.lengthOfMonth()));
 
             datePicker.addValueChangeListener(
-                    event -> UpdateMessage(message, datePicker));
+                    event -> updateMessage(message, datePicker));
             // end-source-example
 
             datePicker.setId("min-and-max-picker");
@@ -236,19 +236,19 @@ package com.vaadin.flow.component.datepicker;
 
             locale1.addClickListener(e -> {
                 datePicker.setLocale(Locale.US);
-                UpdateMessage(message, datePicker);
+                updateMessage(message, datePicker);
             });
             locale2.addClickListener(e -> {
                 datePicker.setLocale(Locale.UK);
-                UpdateMessage(message, datePicker);
+                updateMessage(message, datePicker);
             });
             locale3.addClickListener(e -> {
                 datePicker.setLocale(Locale.CHINA);
-                UpdateMessage(message, datePicker);
+                updateMessage(message, datePicker);
             });
 
             datePicker.addValueChangeListener(
-                    event -> UpdateMessage(message, datePicker));
+                    event -> updateMessage(message, datePicker));
             // end-source-example
             locale1.setId("Locale-US");
             locale2.setId("Locale-UK");
@@ -262,7 +262,7 @@ package com.vaadin.flow.component.datepicker;
         /**
          * Additional code used in the demo
          */
-        private void UpdateMessage(Div message, DatePicker datePicker) {
+        private void updateMessage(Div message, DatePicker datePicker) {
             LocalDate selectedDate = datePicker.getValue();
             if (selectedDate != null) {
                 message.setText(
