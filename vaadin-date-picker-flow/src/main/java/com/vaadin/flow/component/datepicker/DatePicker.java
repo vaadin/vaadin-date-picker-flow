@@ -314,7 +314,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
     }
 
     private void initConnector() {
-        runBeforeClientResponse(ui -> ui.getPage().executeJavaScript(
+        runBeforeClientResponse(ui -> ui.getPage().executeJs(
                 "window.Vaadin.Flow.datepickerConnector.initLazy($0)",
                 getElement()));
     }
@@ -397,17 +397,21 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
         return isInvalidBoolean();
     }
 
-
     /**
-     * Performs a server-side validation of the given value. This is needed because it is possible to circumvent the
-     * client side validation constraints using browser development tools.
+     * Performs a server-side validation of the given value. This is needed
+     * because it is possible to circumvent the client side validation
+     * constraints using browser development tools.
      */
     private boolean isInvalid(LocalDate value) {
-        final boolean isRequiredButEmpty = required && Objects.equals(getEmptyValue(), value);
-        final boolean isGreaterThanMax  = value != null && max != null && value.isAfter(max);
-        final boolean isSmallerThenMin = value != null && min != null && value.isBefore(min);
+        final boolean isRequiredButEmpty = required
+                && Objects.equals(getEmptyValue(), value);
+        final boolean isGreaterThanMax = value != null && max != null
+                && value.isAfter(max);
+        final boolean isSmallerThenMin = value != null && min != null
+                && value.isBefore(min);
         return isRequiredButEmpty || isGreaterThanMax || isSmallerThenMin;
     }
+
     /**
      * Sets displaying a clear button in the datepicker when it has value.
      * <p>
