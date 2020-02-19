@@ -19,6 +19,7 @@ import java.time.LocalDate;
 
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -119,6 +120,16 @@ public class DatePickerTest {
                 picker.isClearButtonVisible());
         assertClearButtonPropertyValueEquals(picker, true);
         assertClearButtonPropertyValueEquals(picker, false);
+    }
+
+    @Test
+    public void setI18nProp_getExtendedI18nType() {
+        class DateTimePickerI18n extends DatePicker.DatePickerI18n {}
+
+        DateTimePickerI18n i18n = new DateTimePickerI18n().setCancel("cancel");
+
+        Assert.assertNotNull(i18n);
+        Assert.assertEquals(DateTimePickerI18n.class, i18n.getClass());
     }
 
     public void assertClearButtonPropertyValueEquals(DatePicker picker,

@@ -651,9 +651,9 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
          *            the month names
          * @return this instance for method chaining
          */
-        public DatePickerI18n setMonthNames(List<String> monthNames) {
+        public <D extends DatePickerI18n> D setMonthNames(List<String> monthNames) {
             this.monthNames = monthNames;
-            return this;
+            return (D) this;
         }
 
         /**
@@ -673,9 +673,9 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
          *            the week days names
          * @return this instance for method chaining
          */
-        public DatePickerI18n setWeekdays(List<String> weekdays) {
+        public <D extends DatePickerI18n> D setWeekdays(List<String> weekdays) {
             this.weekdays = weekdays;
-            return this;
+            return (D) this;
         }
 
         /**
@@ -695,9 +695,9 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
          *            the short names of the week days
          * @return this instance for method chaining
          */
-        public DatePickerI18n setWeekdaysShort(List<String> weekdaysShort) {
+        public <D extends DatePickerI18n> D setWeekdaysShort(List<String> weekdaysShort) {
             this.weekdaysShort = weekdaysShort;
-            return this;
+            return (D) this;
         }
 
         /**
@@ -722,9 +722,9 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
          *            the index of the first day of the week
          * @return this instance for method chaining
          */
-        public DatePickerI18n setFirstDayOfWeek(int firstDayOfWeek) {
+        public <D extends DatePickerI18n> D setFirstDayOfWeek(int firstDayOfWeek) {
             this.firstDayOfWeek = firstDayOfWeek;
-            return this;
+            return (D) this;
         }
 
         /**
@@ -743,9 +743,9 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
          *            the translated word for week
          * @return this instance for method chaining
          */
-        public DatePickerI18n setWeek(String week) {
+        public <D extends DatePickerI18n> D setWeek(String week) {
             this.week = week;
-            return this;
+            return (D) this;
         }
 
         /**
@@ -764,9 +764,9 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
          *            the translated word for calendar
          * @return this instance for method chaining
          */
-        public DatePickerI18n setCalendar(String calendar) {
+        public <D extends DatePickerI18n> D setCalendar(String calendar) {
             this.calendar = calendar;
-            return this;
+            return (D) this;
         }
 
         /**
@@ -785,9 +785,9 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
          *            the translated word for clear
          * @return this instance for method chaining
          */
-        public DatePickerI18n setClear(String clear) {
+        public <D extends DatePickerI18n> D setClear(String clear) {
             this.clear = clear;
-            return this;
+            return (D) this;
         }
 
         /**
@@ -806,9 +806,9 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
          *            the translated word for today
          * @return this instance for method chaining
          */
-        public DatePickerI18n setToday(String today) {
+        public <D extends DatePickerI18n> D setToday(String today) {
             this.today = today;
-            return this;
+            return (D) this;
         }
 
         /**
@@ -827,9 +827,9 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
          *            the translated word for cancel
          * @return this instance for method chaining
          */
-        public DatePickerI18n setCancel(String cancel) {
+        public <D extends DatePickerI18n> D setCancel(String cancel) {
             this.cancel = cancel;
-            return this;
+            return (D) this;
         }
     }
 }
