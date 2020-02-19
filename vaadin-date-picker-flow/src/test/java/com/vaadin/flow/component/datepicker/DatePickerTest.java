@@ -16,7 +16,6 @@
 package com.vaadin.flow.component.datepicker;
 
 import java.time.LocalDate;
-
 import net.jcip.annotations.NotThreadSafe;
 import org.junit.After;
 import org.junit.Assert;
@@ -124,7 +123,7 @@ public class DatePickerTest {
 
     @Test
     public void setI18nProp_getExtendedI18nType() {
-        class DateTimePickerI18n extends DatePicker.DatePickerI18n {}
+        class DateTimePickerI18n extends DatePicker.AbstractDatePickerI18n<DateTimePickerI18n> {}
 
         DateTimePickerI18n i18n = new DateTimePickerI18n().setCancel("cancel");
 
