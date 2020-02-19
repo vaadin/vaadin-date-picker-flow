@@ -128,7 +128,7 @@ package com.vaadin.flow.component.datepicker;
             datePicker.setPlaceholder("Syntymäpäivä");
             datePicker.setLocale(new Locale("fi"));
 
-            datePicker.setI18n(
+            DatePicker.DatePickerI18n i18n =
                     new DatePicker.DatePickerI18n().setWeek("viikko").setCalendar("kalenteri")
                             .setClear("tyhjennä").setToday("tänään")
                             .setCancel("peruuta").setFirstDayOfWeek(1)
@@ -140,7 +140,9 @@ package com.vaadin.flow.component.datepicker;
                                     "keskiviikko", "torstai", "perjantai",
                                     "lauantai")).setWeekdaysShort(
                             Arrays.asList("su", "ma", "ti", "ke", "to", "pe",
-                                    "la")));
+                                    "la"));
+
+            datePicker.setI18n(i18n);
 
             datePicker.addValueChangeListener(event -> {
                 LocalDate selectedDate = event.getValue();
