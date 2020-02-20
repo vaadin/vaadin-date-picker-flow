@@ -48,7 +48,7 @@ import elemental.json.JsonObject;
 public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
         implements HasSize, HasValidation {
 
-    private DatePickerI18n i18n;
+    private AbstractDatePickerI18n i18n;
 
     private final static SerializableFunction<String, LocalDate> PARSER = s -> {
         return s == null || s.isEmpty() ? null : LocalDate.parse(s);
@@ -328,7 +328,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      *         properties weren't set.
      */
     public DatePickerI18n getI18n() {
-        return i18n;
+        return (DatePickerI18n) i18n;
     }
 
     /**
@@ -338,6 +338,19 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      *            the internationalized properties, not <code>null</code>
      */
     public void setI18n(DatePickerI18n i18n) {
+        Objects.requireNonNull(i18n,
+                "The I18N properties object should not be null");
+        this.i18n = i18n;
+        getUI().ifPresent(ui -> setI18nWithJS());
+    }
+
+    /**
+     * Sets the internationalization properties for this component.
+     *
+     * @param i18n
+     *            the internationalized properties, not <code>null</code>
+     */
+    public <T extends AbstractDatePickerI18n> void setI18n(T i18n) {
         Objects.requireNonNull(i18n,
                 "The I18N properties object should not be null");
         this.i18n = i18n;
@@ -625,7 +638,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      */
     public static class DatePickerI18n extends AbstractDatePickerI18n<DatePickerI18n> {}
 
-    abstract static class AbstractDatePickerI18n<T extends AbstractDatePickerI18n> implements Serializable {
+    public abstract static class AbstractDatePickerI18n<T extends AbstractDatePickerI18n> implements Serializable {
         private List<String> monthNames;
         private List<String> weekdays;
         private List<String> weekdaysShort;
