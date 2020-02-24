@@ -45,9 +45,14 @@ public class DatePickerLocaleIT extends AbstractComponentIT {
 
         List<LogEntry> logs = getWarningEntries();
         if (logs.size() != 0) {
+            // To avoid htmlImports warnings from M80
+            List<LogEntry> filteredLogs =
+                    logs.stream().filter(logEntry ->
+                            !logEntry.getMessage().contains("HTML Imports is deprecated and has now been removed"))
+                            .collect(Collectors.toList());
             Assert.assertEquals(
                     "Expected only [Deprecation] warning should be in the logs",
-                    1, logs.size());
+                    0, filteredLogs.size());
             Assert.assertThat(logs.get(0).getMessage(),
                     CoreMatchers.containsString("HTML Imports"));
             Assert.assertThat(logs.get(0).getMessage(),
