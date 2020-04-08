@@ -292,7 +292,13 @@
                     oldLocale = locale;
                 } else if (currentDate) {
                     /* set current date to invoke use of new locale */
-                    datepicker._selectedDate = new Date(currentDate.year, currentDate.month, currentDate.day);
+                    const rawDate = new Date(currentDate.year, currentDate.month, currentDate.day);
+                    if (currentDate.year >= 0 && currentDate.year <= 99) {
+                        // JS Date constructor converts years 0-99 to 1900-1999 so
+                        // this is needed to fix that when we want an explicit year.
+                        rawDate.setFullYear(currentDate.year);
+                    }
+                    datepicker._selectedDate = rawDate;
                 }
             };
             datepicker.$connector.setLocale = tryCatchWrapper(setLocale);
