@@ -73,10 +73,10 @@
             datepicker.$connector = {};
 
             /* init helper parts for reverse-engineering date-regex */
-            datepicker.$connector.dayPart = new FlowDatePickerPart("22");
-            datepicker.$connector.monthPart = new FlowDatePickerPart("11");
-            datepicker.$connector.yearPart = new FlowDatePickerPart("1987");
-            datepicker.$connector.parts = [datepicker.$connector.dayPart, datepicker.$connector.monthPart, datepicker.$connector.yearPart];
+            const dayPart = datepicker.$connector.dayPart = new FlowDatePickerPart("22");
+            const monthPart = datepicker.$connector.monthPart = new FlowDatePickerPart("11");
+            const yearPart = datepicker.$connector.yearPart = new FlowDatePickerPart("1987");
+            const parts = datepicker.$connector.parts = [dayPart, monthPart, yearPart];
 
             // Old locale should always be the default vaadin-date-picker component
             // locale {English/US} as we init lazily and the date-picker formats
@@ -141,13 +141,13 @@
                 }
 
                 /* create test-string where to extract parsing regex */
-                let testDate = new Date(Date.UTC(datepicker.$connector.yearPart.initial, datepicker.$connector.monthPart.initial - 1, datepicker.$connector.dayPart.initial));
+                let testDate = new Date(Date.UTC(yearPart.initial, monthPart.initial - 1, dayPart.initial));
                 let testString = cleanString(testDate.toLocaleDateString(locale, { timeZone: 'UTC' }));
-                datepicker.$connector.parts.forEach(function (part) {
+                parts.forEach(function (part) {
                     part.index = testString.indexOf(part.initial);
                 });
                 /* sort items to match correct places in regex groups */
-                datepicker.$connector.parts.sort(FlowDatePickerPart.compare);
+                parts.sort(FlowDatePickerPart.compare);
                 /* create regex
                  * regex will be the date, so that:
                  * - day-part is '(\d{1,2})' (1 or 2 digits),
@@ -161,16 +161,15 @@
                  * here the first part is month, second day and third year)
                  */
                 datepicker.$connector.regex = testString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
-                    .replace(datepicker.$connector.dayPart.initial, "(\\d{1,2})")
-                    .replace(datepicker.$connector.monthPart.initial, "(\\d{1,2})")
-                    .replace(datepicker.$connector.yearPart.initial, "(\\d{1,4})");
+                    .replace(dayPart.initial, "(\\d{1,2})")
+                    .replace(monthPart.initial, "(\\d{1,2})")
+                    .replace(yearPart.initial, "(\\d{1,4})");
 
                 /**
                  * @param {DateHash} date
                  * @returns {number}
                  */
                 let indexOfYearForFormattedDate = function (date) {
-                    const {parts, dayPart, monthPart, yearPart} = datepicker.$connector;
                     let adjust = 0;
                     for (let i = 1; i < 4; i++) {
                         const part = parts[i - 1];
@@ -220,7 +219,6 @@
 
                     let match = dateString.match(datepicker.$connector.regex);
                     if (match && match.length === 4) {
-                        const {parts, dayPart, monthPart, yearPart} = datepicker.$connector;
                         let year;
                         for (let i = 1; i < 4; i++) {
                             const part = parts[i-1];
