@@ -8,6 +8,9 @@
      * @property {number} day - Day of month
      * @property {number} month - Month (0 = January, 11 = December)
      * @property {number} year - Year
+     * @property {string|undefined} dayMatch - Returned by parseDate but not needed as input for formatDate
+     * @property {string|undefined} monthMatch - Returned by parseDate but not needed as input for formatDate
+     * @property {string|undefined} yearMatch - Returned by parseDate but not needed as input for formatDate
      */
 
     /**
@@ -32,18 +35,17 @@
 
     /**
      * Helper class for parsing regex from formatted date string
-     * @typedef {object} FlowDatePickerPart
-     * @property {string} initial
-     * @property {number} index
-     * @property {number} value
      */
     class FlowDatePickerPart {
         /**
          * @param {string} initial
          */
         constructor(initial) {
+            /** @type {string} */
             this.initial = initial;
+            /** @type {number} */
             this.index = 0;
+            /** @type {number} */
             this.value = 0;
         }
 
@@ -107,7 +109,7 @@
              * @returns {string}
              */
             let getInputValue = function () {
-                let inputValue = '';
+                let inputValue;
                 try {
                     inputValue = datepicker._inputValue;
                 } catch(err) {
@@ -141,7 +143,7 @@
                 }
 
                 /* create test-string where to extract parsing regex */
-                let testDate = new Date(Date.UTC(yearPart.initial, monthPart.initial - 1, dayPart.initial));
+                let testDate = new Date(Date.UTC(parseInt(yearPart.initial), parseInt(monthPart.initial) - 1, parseInt(dayPart.initial)));
                 let testString = cleanString(testDate.toLocaleDateString(locale, { timeZone: 'UTC' }));
                 parts.forEach(function (part) {
                     part.index = testString.indexOf(part.initial);
@@ -173,16 +175,43 @@
                     let adjust = 0;
                     for (let i = 1; i < 4; i++) {
                         const part = parts[i - 1];
-                        if (part === dayPart && date.day < 10) {
-                            adjust -= 1;
-                        } else if (part === monthPart && date.month < 9) {
-                            adjust -= 1;
+                        // Adjust the index if the day or month (before the year)
+                        // have less digits than in the initial testDate so that
+                        // this works also with single digit day or month.
+                        // Day or month of less than 10 may still be 2 digit prefixed
+                        // with 0 depending on locale.
+                        if (part === dayPart && date.dayMatch) {
+                            adjust -= 2 - date.dayMatch.length;
+                        } else if (part === monthPart && date.monthMatch) {
+                            adjust -= 2 - date.monthMatch.length;
                         } else if (part === yearPart) {
                             return yearPart.index + adjust;
                         }
                     }
                 };
                 indexOfYearForFormattedDate = tryCatchWrapper(indexOfYearForFormattedDate);
+
+                /**
+                 * Prefixes the year in the given date string with zeros if
+                 * needed to make it four digits
+                 * @param {string} formattedDate Date formatted with Date.toLocaleDateString()
+                 * @returns {string}
+                 */
+                let yearToFourDigitInFormattedDate = function (formattedDate) {
+                    const date = /** @type {DateHash} */ _parseDate(formattedDate);
+                    if (!date) {
+                        return formattedDate;
+                    }
+                    if (date.yearMatch.length >= 4) {
+                        return formattedDate;
+                    }
+                    const yearIndex = indexOfYearForFormattedDate(date);
+                    const yearStr = String(date.year).replace(/\d+/, y => '0000'.substring(y.length) + y);
+                    const beforeYear = formattedDate.substring(0, yearIndex);
+                    const afterYear = formattedDate.substring(yearIndex + String(date.year).length);
+                    return beforeYear + yearStr + afterYear;
+                }
+                yearToFourDigitInFormattedDate = tryCatchWrapper(yearToFourDigitInFormattedDate);
 
                 /**
                  * @param {DateHash} date
@@ -197,20 +226,17 @@
                     }
                     let formattedDate = cleanString(rawDate.toLocaleDateString(locale, { timeZone: 'UTC' }));
                     if (date.year < 1000) {
-                        const yearIndex = indexOfYearForFormattedDate(date);
-                        const yearStr = String(date.year).replace(/\d+/, y => '0000'.substring(y.length) + y);
-                        formattedDate = formattedDate.substring(0, yearIndex) + yearStr + formattedDate.substring(yearIndex + String(date.year).length);
+                        formattedDate = yearToFourDigitInFormattedDate(formattedDate);
                     }
                     return formattedDate;
                 };
                 datepicker.i18n.formatDate = tryCatchWrapper(formatDate);
 
                 /**
-                 *
                  * @param {string} dateString
                  * @returns {DateHash|boolean|undefined}
                  */
-                const parseDate = function (dateString) {
+                let _parseDate = function (dateString) {
                     dateString = cleanString(dateString);
 
                     if (dateString.length === 0) {
@@ -219,26 +245,46 @@
 
                     let match = dateString.match(datepicker.$connector.regex);
                     if (match && match.length === 4) {
-                        let year;
+                        /** @type {number} */
+                        let day, month, year
+                        /** @type {string} */
+                        let dayMatch, monthMatch, yearMatch;
+
                         for (let i = 1; i < 4; i++) {
                             const part = parts[i-1];
                             const matchValue = match[i];
                             part.value = parseInt(matchValue);
-                            if (part === yearPart) {
+                            if (part === dayPart) {
+                                day = part.value;
+                                dayMatch = matchValue;
+                            } else if (part === monthPart) {
+                                month = part.value - 1;
+                                monthMatch = matchValue;
+                            } else if (part === yearPart) {
                                 year = part.value;
-                                if (matchValue.length < 3 && year >= 0) {
-                                    year += year < 50 ? 2000 : 1900;
-                                }
+                                yearMatch = matchValue;
                             }
                         }
-                        return {
-                            day: dayPart.value,
-                            month: monthPart.value - 1,
-                            year
-                        };
+                        return {day, month, year, dayMatch, monthMatch, yearMatch};
                     } else {
                         return false;
                     }
+                };
+                _parseDate = tryCatchWrapper(_parseDate);
+
+                /**
+                 * @param {string} dateString
+                 * @returns {DateHash|boolean|undefined}
+                 */
+                const parseDate = function (dateString) {
+                    const date = _parseDate(dateString);
+                    if (!date) {
+                        return date;
+                    }
+                    if (date.yearMatch.length < 3 && date.year >= 0) {
+                        date.year += date.year < 50 ? 2000 : 1900;
+                    }
+                    return date;
                 };
                 datepicker.i18n.parseDate = tryCatchWrapper(parseDate);
 
