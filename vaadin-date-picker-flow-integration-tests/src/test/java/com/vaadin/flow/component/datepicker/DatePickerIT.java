@@ -29,7 +29,7 @@ import com.vaadin.flow.demo.ComponentDemoTest;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Integration tests for the {@link DatePickerView}.
+ * Integration tests for the {@link DatePickerViewDemoPage}.
  */
 public class DatePickerIT extends ComponentDemoTest {
 
