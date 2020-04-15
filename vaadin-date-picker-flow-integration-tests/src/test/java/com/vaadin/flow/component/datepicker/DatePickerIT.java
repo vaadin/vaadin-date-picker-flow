@@ -184,6 +184,12 @@ public class DatePickerIT extends ComponentDemoTest {
                 "25/03/2018", localePicker.getInputValue());
     }
 
+    private void setDateAndAssert(DatePickerElement datePicker, LocalDate date,
+            String expectedInputValue) {
+        datePicker.setDate(date);
+        Assert.assertEquals(expectedInputValue, datePicker.getInputValue());
+    }
+
     @Test
     public void selectDatesBeforeYear1000() {
         DatePickerElement localePicker = $(DatePickerElement.class)
@@ -191,37 +197,57 @@ public class DatePickerIT extends ComponentDemoTest {
         TestBenchElement message = $("div")
                 .id("Customize-locale-picker-message");
 
-        localePicker.setDate(LocalDate.of(900, Month.MARCH, 7));
-        Assert.assertEquals("3/7/0900", localePicker.getInputValue());
-        localePicker.setDate(LocalDate.of(87, Month.MARCH, 7));
-        Assert.assertEquals("3/7/0087", localePicker.getInputValue());
+        setDateAndAssert(localePicker, LocalDate.of(900, Month.MARCH, 7),
+                "3/7/0900");
+        setDateAndAssert(localePicker, LocalDate.of(87, Month.MARCH, 7),
+                "3/7/0087");
 
         $("button").id("Locale-UK").click();
         Assert.assertEquals("07/03/0087", localePicker.getInputValue());
 
-        localePicker.setDate(LocalDate.of(900, Month.MARCH, 6));
-        Assert.assertEquals("06/03/0900", localePicker.getInputValue());
-        localePicker.setDate(LocalDate.of(87, Month.MARCH, 6));
-        Assert.assertEquals("06/03/0087", localePicker.getInputValue());
+        setDateAndAssert(localePicker, LocalDate.of(900, Month.MARCH, 6),
+                "06/03/0900");
+        setDateAndAssert(localePicker, LocalDate.of(87, Month.MARCH, 6),
+                "06/03/0087");
 
         $("button").id("Locale-US").click();
         Assert.assertEquals("3/6/0087", localePicker.getInputValue());
 
-        localePicker.setDate(LocalDate.of(900, Month.MARCH, 5));
-        Assert.assertEquals("3/5/0900", localePicker.getInputValue());
-        localePicker.setDate(LocalDate.of(87, Month.MARCH, 5));
-        Assert.assertEquals("3/5/0087", localePicker.getInputValue());
+        setDateAndAssert(localePicker, LocalDate.of(900, Month.MARCH, 5),
+                "3/5/0900");
+        setDateAndAssert(localePicker, LocalDate.of(87, Month.MARCH, 5),
+                "3/5/0087");
 
         $("button").id("Locale-CHINA").click();
         Assert.assertEquals("0087/3/5", localePicker.getInputValue());
 
-        localePicker.setDate(LocalDate.of(900, Month.MARCH, 4));
-        Assert.assertEquals("0900/3/4", localePicker.getInputValue());
-        localePicker.setDate(LocalDate.of(87, Month.MARCH, 4));
-        Assert.assertEquals("0087/3/4", localePicker.getInputValue());
+        setDateAndAssert(localePicker, LocalDate.of(900, Month.MARCH, 4),
+                "0900/3/4");
+        setDateAndAssert(localePicker, LocalDate.of(87, Month.MARCH, 4),
+                "0087/3/4");
 
         $("button").id("Locale-UK").click();
         Assert.assertEquals("04/03/0087", localePicker.getInputValue());
+    }
+
+    /**
+     * Expects input value to change to expectedInputValue after setting it.
+     */
+    private void setInputValueAndAssert(DatePickerElement datePicker,
+            String inputValue, String expectedInputValue,
+            LocalDate expectedDate) {
+        datePicker.setInputValue(inputValue);
+        Assert.assertEquals(expectedInputValue, datePicker.getInputValue());
+        Assert.assertEquals(expectedDate, datePicker.getDate());
+    }
+
+    /**
+     * Expects input value to stay the same as it is set to.
+     */
+    private void setInputValueAndAssert(DatePickerElement datePicker,
+            String inputValue, LocalDate expectedDate) {
+        setInputValueAndAssert(datePicker, inputValue, inputValue,
+                expectedDate);
     }
 
     @Test
@@ -231,101 +257,53 @@ public class DatePickerIT extends ComponentDemoTest {
         TestBenchElement message = $("div")
                 .id("Customize-locale-picker-message");
 
-        localePicker.setInputValue("3/7/0900");
-        Assert.assertEquals("3/7/0900", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(900, Month.MARCH, 7),
-                localePicker.getDate());
+        setInputValueAndAssert(localePicker, "3/7/0900",
+                LocalDate.of(900, Month.MARCH, 7));
 
-        localePicker.setInputValue("3/6/900");
-        Assert.assertEquals("3/6/0900", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(900, Month.MARCH, 6),
-                localePicker.getDate());
-
-        localePicker.setInputValue("3/5/0087");
-        Assert.assertEquals("3/5/0087", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(87, Month.MARCH, 5),
-                localePicker.getDate());
-
-        localePicker.setInputValue("3/6/87");
-        Assert.assertEquals("3/6/1987", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(1987, Month.MARCH, 6),
-                localePicker.getDate());
-
-        localePicker.setInputValue("3/7/20");
-        Assert.assertEquals("3/7/2020", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(2020, Month.MARCH, 7),
-                localePicker.getDate());
-
-        localePicker.setInputValue("3/8/0020");
-        Assert.assertEquals("3/8/0020", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(20, Month.MARCH, 8),
-                localePicker.getDate());
+        setInputValueAndAssert(localePicker, "3/6/900", "3/6/0900",
+                LocalDate.of(900, Month.MARCH, 6));
+        setInputValueAndAssert(localePicker, "3/5/0087",
+                LocalDate.of(87, Month.MARCH, 5));
+        setInputValueAndAssert(localePicker, "3/6/87", "3/6/1987",
+                LocalDate.of(1987, Month.MARCH, 6));
+        setInputValueAndAssert(localePicker, "3/7/20", "3/7/2020",
+                LocalDate.of(2020, Month.MARCH, 7));
+        setInputValueAndAssert(localePicker, "3/8/0020",
+                LocalDate.of(20, Month.MARCH, 8));
 
         $("button").id("Locale-UK").click();
         Assert.assertEquals("08/03/0020", localePicker.getInputValue());
 
-        localePicker.setInputValue("7/3/0900");
-        Assert.assertEquals("07/03/0900", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(900, Month.MARCH, 7),
-                localePicker.getDate());
+        setInputValueAndAssert(localePicker, "7/3/0900", "07/03/0900",
+                LocalDate.of(900, Month.MARCH, 7));
 
-        localePicker.setInputValue("6/3/900");
-        Assert.assertEquals("06/03/0900", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(900, Month.MARCH, 6),
-                localePicker.getDate());
-
-        localePicker.setInputValue("5/3/0087");
-        Assert.assertEquals("05/03/0087", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(87, Month.MARCH, 5),
-                localePicker.getDate());
-
-        localePicker.setInputValue("6/3/87");
-        Assert.assertEquals("06/03/1987", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(1987, Month.MARCH, 6),
-                localePicker.getDate());
-
-        localePicker.setInputValue("7/3/20");
-        Assert.assertEquals("07/03/2020", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(2020, Month.MARCH, 7),
-                localePicker.getDate());
-
-        localePicker.setInputValue("8/3/0020");
-        Assert.assertEquals("08/03/0020", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(20, Month.MARCH, 8),
-                localePicker.getDate());
+        setInputValueAndAssert(localePicker, "6/3/900", "06/03/0900",
+                LocalDate.of(900, Month.MARCH, 6));
+        setInputValueAndAssert(localePicker, "5/3/0087", "05/03/0087",
+                LocalDate.of(87, Month.MARCH, 5));
+        setInputValueAndAssert(localePicker, "6/3/87", "06/03/1987",
+                LocalDate.of(1987, Month.MARCH, 6));
+        setInputValueAndAssert(localePicker, "7/3/20", "07/03/2020",
+                LocalDate.of(2020, Month.MARCH, 7));
+        setInputValueAndAssert(localePicker, "8/3/0020", "08/03/0020",
+                LocalDate.of(20, Month.MARCH, 8));
 
         $("button").id("Locale-CHINA").click();
         Assert.assertEquals("0020/3/8", localePicker.getInputValue());
 
-        localePicker.setInputValue("0900/3/7");
-        Assert.assertEquals("0900/3/7", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(900, Month.MARCH, 7),
-                localePicker.getDate());
+        setInputValueAndAssert(localePicker, "0900/3/7",
+                LocalDate.of(900, Month.MARCH, 7));
 
-        localePicker.setInputValue("900/3/6");
-        Assert.assertEquals("0900/3/6", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(900, Month.MARCH, 6),
-                localePicker.getDate());
-
-        localePicker.setInputValue("0087/3/5");
-        Assert.assertEquals("0087/3/5", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(87, Month.MARCH, 5),
-                localePicker.getDate());
-
-        localePicker.setInputValue("87/3/6");
-        Assert.assertEquals("1987/3/6", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(1987, Month.MARCH, 6),
-                localePicker.getDate());
-
-        localePicker.setInputValue("20/3/7");
-        Assert.assertEquals("2020/3/7", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(2020, Month.MARCH, 7),
-                localePicker.getDate());
-
-        localePicker.setInputValue("0020/3/8");
-        Assert.assertEquals("0020/3/8", localePicker.getInputValue());
-        Assert.assertEquals(LocalDate.of(20, Month.MARCH, 8),
-                localePicker.getDate());
+        setInputValueAndAssert(localePicker, "900/3/6", "0900/3/6",
+                LocalDate.of(900, Month.MARCH, 6));
+        setInputValueAndAssert(localePicker, "0087/3/5",
+                LocalDate.of(87, Month.MARCH, 5));
+        setInputValueAndAssert(localePicker, "87/3/6", "1987/3/6",
+                LocalDate.of(1987, Month.MARCH, 6));
+        setInputValueAndAssert(localePicker, "20/3/7", "2020/3/7",
+                LocalDate.of(2020, Month.MARCH, 7));
+        setInputValueAndAssert(localePicker, "0020/3/8",
+                LocalDate.of(20, Month.MARCH, 8));
 
         $("button").id("Locale-US").click();
         Assert.assertEquals("3/8/0020", localePicker.getInputValue());
