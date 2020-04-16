@@ -105,11 +105,15 @@
                 * The sorting part solves that which part is which (for example,
                 * here the first part is month, second day and third year)
                 *  */
-                datepicker.$connector.regex = testString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&').replace(datepicker.$connector.dayPart.initial, "(\\d{1,2})").replace(datepicker.$connector.monthPart.initial, "(\\d{1,2})").replace(datepicker.$connector.yearPart.initial, "(\\d{4})");
+
+                datepicker.$connector.regex = testString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
+                  .replace(datepicker.$connector.dayPart.initial, "(\\d{1,2})")
+                  .replace(datepicker.$connector.monthPart.initial, "(\\d{1,2})")
+                  .replace(datepicker.$connector.yearPart.initial, "(\\d{1,4})");
 
                 datepicker.i18n.formatDate = tryCatchWrapper(function (date) {
-                    let rawDate = new Date(Date.UTC(date.year, date.month, date.day));
-                    return cleanString(rawDate.toLocaleDateString(locale, { timeZone: 'UTC' }));
+                    let rawDate = datepicker._parseDate(`${date.year}-${date.month + 1}-${date.day}`);
+                    return cleanString(rawDate.toLocaleDateString(locale));
                 });
 
                 datepicker.i18n.parseDate = tryCatchWrapper(function (dateString) {
@@ -138,7 +142,7 @@
                     oldLocale = locale;
                 } else if (currentDate) {
                     /* set current date to invoke use of new locale */
-                    datepicker._selectedDate = new Date(currentDate.year, currentDate.month, currentDate.day);
+                    datepicker._selectedDate = datepicker._parseDate(`${currentDate.year}-${currentDate.month + 1}-${currentDate.day}`);
                 }
             });
         })(datepicker)
