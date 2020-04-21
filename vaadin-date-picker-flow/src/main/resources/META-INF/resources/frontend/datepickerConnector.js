@@ -3,15 +3,59 @@
         return window.Vaadin.Flow.tryCatchWrapper(callback, 'Vaadin Date Picker', 'vaadin-date-picker-flow');
     };
 
-    /* helper class for parsing regex from formatted date string */
+    /**
+     * @typedef {object} DateHash
+     * @property {number} day - Day of month
+     * @property {number} month - Month (0 = January, 11 = December)
+     * @property {number} year - Year
+     * @property {string|undefined} dayMatch - Returned by parseDate but not needed as input for formatDate
+     * @property {string|undefined} monthMatch - Returned by parseDate but not needed as input for formatDate
+     * @property {string|undefined} yearMatch - Returned by parseDate but not needed as input for formatDate
+     */
 
+    /**
+     * @typedef {HTMLElement} DatePickerWithConnector
+     * @property {string} value
+     * @property {string} _inputValue
+     * @property {boolean} invalid
+     * @property {object} i18n
+     * @property {function(string):(Date|undefined)} _parseDate
+     * @property {function(DateHash):string} i18n.formatDate
+     * @property {function(string):(DateHash|undefined)} i18n.parseDate
+     * @property {object} $connector
+     * @property {FlowDatePickerPart} $connector.dayPart
+     * @property {FlowDatePickerPart} $connector.monthPart
+     * @property {FlowDatePickerPart} $connector.yearPart
+     * @property {FlowDatePickerPart[]} $connector.parts
+     */
+
+    /**
+     * @typedef {Event} EventWithDatePickerTarget
+     * @property {DatePickerWithConnector} target
+     */
+
+    /**
+     * Helper class for parsing regex from formatted date string
+     * @class
+     */
     class FlowDatePickerPart {
+        /**
+         * @param {string} initial
+         */
         constructor(initial) {
+            /** @type {string} */
             this.initial = initial;
+            /** @type {number} */
             this.index = 0;
+            /** @type {number} */
             this.value = 0;
         }
 
+        /**
+         * @param {FlowDatePickerPart} part1
+         * @param {FlowDatePickerPart} part2
+         * @returns {number}
+         */
         static compare(part1, part2) {
             if (part1.index < part2.index) {
                 return -1;
@@ -22,8 +66,9 @@
             return 0;
         }
     }
+
     window.Vaadin.Flow.datepickerConnector = {
-        initLazy: datepicker => tryCatchWrapper(function (datepicker) {
+        initLazy: datepicker => tryCatchWrapper(/** @param {DatePickerWithConnector} datepicker */ function (datepicker) {
             // Check whether the connector was already initialized for the datepicker
             if (datepicker.$connector) {
                 return;
@@ -43,21 +88,29 @@
             // value as we may need to parse user input so we can't use the _selectedDate value.
             let oldLocale = "en-us";
 
-            datepicker.addEventListener('blur', tryCatchWrapper(e => {
+            datepicker.addEventListener('blur', tryCatchWrapper(/** @param {EventWithDatePickerTarget} e */ e => {
                 if (!e.target.value && e.target.invalid) {
                     console.warn("Invalid value in the DatePicker.");
                 }
             }));
 
-            const cleanString = tryCatchWrapper(function (string) {
-                // Clear any non ascii characters from the date string,
-                // mainly the LEFT-TO-RIGHT MARK.
-                // This is a problem for many Microsoft browsers where `toLocaleDateString`
-                // adds the LEFT-TO-RIGHT MARK see https://en.wikipedia.org/wiki/Left-to-right_mark
+            /**
+             * Clear any non ascii characters from the date string,
+             * mainly the LEFT-TO-RIGHT MARK.
+             * This is a problem for many Microsoft browsers where `toLocaleDateString`
+             * adds the LEFT-TO-RIGHT MARK see https://en.wikipedia.org/wiki/Left-to-right_mark
+             * @param {string} string
+             * @returns {string}
+             */
+            let cleanString = function (string) {
                 return string.replace(/[^\x00-\x7F]/g, "");
-            });
+            };
+            cleanString = tryCatchWrapper(cleanString);
 
-            const getInputValue = tryCatchWrapper(function () {
+            /**
+             * @returns {string}
+             */
+            let getInputValue = function () {
                 let inputValue = '';
                 try {
                     inputValue = datepicker._inputValue;
@@ -66,10 +119,13 @@
                     inputValue = datepicker.value || '';
                 }
                 return inputValue;
-            });
+            };
+            getInputValue = tryCatchWrapper(getInputValue);
 
-            datepicker.$connector.setLocale = tryCatchWrapper(function (locale) {
-
+            /**
+             * @param {string} locale - Locale string (e.g. 'en-US', 'fi-FI')
+             */
+            const setLocale = function (locale) {
                 try {
                     // Check whether the locale is supported or not
                     new Date().toLocaleDateString(locale);
@@ -78,8 +134,11 @@
                     console.warn("The locale is not supported, using default locale setting(en-US).");
                 }
 
+                /** @type {DateHash} */
                 let currentDate = false;
+                /** @type {string} */
                 let inputValue = getInputValue();
+
                 if (datepicker.i18n.parseDate !== 'undefined' && inputValue) {
                     /* get current date with old parsing */
                     currentDate = datepicker.i18n.parseDate(inputValue);
@@ -110,7 +169,12 @@
                     .replace(datepicker.$connector.monthPart.initial, "(\\d{1,2})")
                     .replace(datepicker.$connector.yearPart.initial, "(\\d{1,4})");
 
-                datepicker.i18n.formatDate = tryCatchWrapper(function (date) {
+                /**
+                 * @param {DateHash} date
+                 * @returns {string}
+                 */
+                const formatDate = function (date) {
+                    /** @type {Date} */
                     let rawDate = datepicker._parseDate(`${date.year}-${date.month + 1}-${date.day}`);
 
                     // Workaround for Safari DST offset issue when using Date.toLocaleDateString().
@@ -120,9 +184,14 @@
                     rawDate.setHours(12)
 
                     return cleanString(rawDate.toLocaleDateString(locale));
-                });
+                };
+                datepicker.i18n.formatDate = tryCatchWrapper(formatDate);
 
-                datepicker.i18n.parseDate = tryCatchWrapper(function (dateString) {
+                /**
+                 * @param {string} dateString
+                 * @returns {DateHash|boolean|undefined}
+                 */
+                const parseDate = function (dateString) {
                     dateString = cleanString(dateString);
 
                     if (dateString.length == 0) {
@@ -142,7 +211,8 @@
                     }  else {
                         return false;
                     }
-                });
+                };
+                datepicker.i18n.parseDate = tryCatchWrapper(parseDate);
 
                 if (inputValue === "") {
                     oldLocale = locale;
@@ -150,7 +220,8 @@
                     /* set current date to invoke use of new locale */
                     datepicker._selectedDate = datepicker._parseDate(`${currentDate.year}-${currentDate.month + 1}-${currentDate.day}`);
                 }
-            });
+            };
+            datepicker.$connector.setLocale = tryCatchWrapper(setLocale);
         })(datepicker)
     };
 })();
