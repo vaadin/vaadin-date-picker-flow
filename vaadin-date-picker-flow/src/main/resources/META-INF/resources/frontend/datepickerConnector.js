@@ -111,7 +111,7 @@
              * @returns {string}
              */
             let getInputValue = function () {
-                let inputValue = '';
+                let inputValue;
                 try {
                     inputValue = datepicker._inputValue;
                 } catch(err) {
@@ -135,17 +135,17 @@
                 }
 
                 /** @type {DateHash} */
-                let currentDate = false;
+                let currentDate;
                 /** @type {string} */
                 let inputValue = getInputValue();
 
-                if (datepicker.i18n.parseDate !== 'undefined' && inputValue) {
+                if (datepicker.i18n.parseDate && inputValue) {
                     /* get current date with old parsing */
                     currentDate = datepicker.i18n.parseDate(inputValue);
                 }
 
                 /* create test-string where to extract parsing regex */
-                let testDate = new Date(Date.UTC(datepicker.$connector.yearPart.initial, datepicker.$connector.monthPart.initial - 1, datepicker.$connector.dayPart.initial));
+                let testDate = new Date(Date.UTC(parseInt(datepicker.$connector.yearPart.initial), parseInt(datepicker.$connector.monthPart.initial) - 1, parseInt(datepicker.$connector.dayPart.initial)));
                 let testString = cleanString(testDate.toLocaleDateString(locale, { timeZone: 'UTC' }));
                 datepicker.$connector.parts.forEach(function (part) {
                     part.index = testString.indexOf(part.initial);
@@ -194,12 +194,12 @@
                 const parseDate = function (dateString) {
                     dateString = cleanString(dateString);
 
-                    if (dateString.length == 0) {
+                    if (dateString.length === 0) {
                         return;
                     }
 
                     let match = dateString.match(datepicker.$connector.regex);
-                    if (match && match.length == 4) {
+                    if (match && match.length === 4) {
                         for (let i = 1; i < 4; i++) {
                             datepicker.$connector.parts[i-1].value = parseInt(match[i]);
                         }
