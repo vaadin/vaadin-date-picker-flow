@@ -72,6 +72,7 @@ public class DatePickerView extends DemoView {
         DatePicker valueDatePicker = new DatePicker();
         LocalDate now = LocalDate.now();
         valueDatePicker.setValue(now);
+        add(labelDatePicker, placeholderDatePicker, valueDatePicker);
         // end-source-example
 
         labelDatePicker.getStyle().set("margin-right", "5px");
@@ -93,6 +94,7 @@ public class DatePickerView extends DemoView {
         readonlyDatePicker.setLabel("Read-only");
         readonlyDatePicker.setValue(LocalDate.now());
         readonlyDatePicker.setReadOnly(true);
+        add(disabledDatePicker, readonlyDatePicker);
         // end-source-example
 
         disabledDatePicker.getStyle().set("margin-right", "5px");
@@ -108,6 +110,7 @@ public class DatePickerView extends DemoView {
 
         // Display an icon which can be clicked to clear the value:
         datePicker.setClearButtonVisible(true);
+        add(datePicker);
         // end-source-example
 
         addCard("Clear button", datePicker);
@@ -128,6 +131,7 @@ public class DatePickerView extends DemoView {
                 value.setText("Selected date: " + event.getValue());
             }
         });
+        add(datePicker, value);
         // end-source-example
 
         VerticalLayout verticalLayout = new VerticalLayout(datePicker, value);
@@ -147,6 +151,7 @@ public class DatePickerView extends DemoView {
         Button button = new Button("Submit", event ->
             binder.validate()
         );
+        add(datePicker, button);
         // end-source-example
 
         VerticalLayout verticalLayout = new VerticalLayout();
@@ -163,6 +168,7 @@ public class DatePickerView extends DemoView {
         datePicker.setValue(LocalDate.of(2019, 11, 11));
         datePicker.setMin(LocalDate.of(2019, 11, 10));
         datePicker.setMax(LocalDate.of(2019, 11, 16));
+        add(datePicker);
         // end-source-example
 
         addCard("Validation", "Min and max date validation", datePicker);
@@ -179,6 +185,7 @@ public class DatePickerView extends DemoView {
                         && !DayOfWeek.SUNDAY.equals(value.getDayOfWeek()),
                 "The selected date must be between Monday to Friday")
                 .bind(Appointment::getDate, Appointment::setDate);
+        add(datePicker);
         // end-source-example
 
         addCard("Validation", "Custom validator", datePicker);
@@ -235,6 +242,7 @@ public class DatePickerView extends DemoView {
                 }
             }
         });
+        add(fromDatePicker, toDatePicker);
         // end-source-example
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -258,6 +266,7 @@ public class DatePickerView extends DemoView {
                         "Wednesday", "Thursday", "Friday", "Saturday"))
                 .setWeekdaysShort(Arrays.asList("Sun", "Mon", "Tue", "Wed",
                         "Thu", "Fri", "Sat")));
+        add(datePicker)
         // end-source-example
 
         addCard("Presentation", "Date picker with week numbers", datePicker);
@@ -300,6 +309,7 @@ public class DatePickerView extends DemoView {
                 message.setText("No date is selected");
             }
         });
+        add(datePicker, message);
         // end-source-example
 
         datePicker.setId("finnish-picker");
@@ -321,6 +331,7 @@ public class DatePickerView extends DemoView {
                         "Wednesday", "Thursday", "Friday", "Saturday"))
                 .setWeekdaysShort(Arrays.asList("Sun", "Mon", "Tue", "Wed",
                         "Thu", "Fri", "Sat")));
+        add(datePicker);
         // end-source-example
 
     }
@@ -340,7 +351,7 @@ public class DatePickerView extends DemoView {
         DatePicker rightDatePicker = new DatePicker();
         rightDatePicker.setValue(LocalDate.now());
         rightDatePicker.getElement().setAttribute("theme", "align-right");
-
+        add(leftDatePicker, centerDatePicker, rightDatePicker);
         // end-source-example
 
         div.add(leftDatePicker, centerDatePicker, rightDatePicker);
@@ -355,6 +366,7 @@ public class DatePickerView extends DemoView {
         DatePicker datePicker = new DatePicker();
         datePicker.setLabel("Label");
         datePicker.getElement().setAttribute("theme", "small");
+        add(datePicker);
         // end-source-example
 
         addCard("Theme Variants", "Small text field", datePicker);
@@ -378,6 +390,7 @@ public class DatePickerView extends DemoView {
                 firstAnchor);
         HorizontalLayout secondHorizontalLayout = new HorizontalLayout(
                 secondDiv, secondAnchor);
+        add(firstHorizontalLayout, secondHorizontalLayout);
         // begin-source-example
         // source-example-heading: Styling references
 
