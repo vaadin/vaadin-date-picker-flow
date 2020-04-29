@@ -266,7 +266,7 @@ public class DatePickerView extends DemoView {
                         "Wednesday", "Thursday", "Friday", "Saturday"))
                 .setWeekdaysShort(Arrays.asList("Sun", "Mon", "Tue", "Wed",
                         "Thu", "Fri", "Sat")));
-        add(datePicker)
+        add(datePicker);
         // end-source-example
 
         addCard("Presentation", "Date picker with week numbers", datePicker);
