@@ -598,6 +598,24 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
     }
 
     /**
+     * When auto open is enabled, the dropdown will open when the field is clicked.
+     *
+     * @param autoOpenEnabled Value for the auto open enabled property,
+     */
+    public void setAutoOpenEnabled(boolean autoOpenEnabled) {
+        getElement().setProperty("autoOpenDisabled", !autoOpenEnabled);
+    }
+
+    /**
+     * When auto open is enabled, the dropdown will open when the field is clicked.
+     *
+     * @return {@code true} if auto open is enabled. {@code false} otherwise. Default is {@code true}
+     */
+    public boolean isAutoOpenEnabled() {
+        return !getElement().getProperty("autoOpenDisabled",false);
+    }
+
+    /**
      * Performs server-side validation of the current value. This is needed
      * because it is possible to circumvent the client-side validation
      * constraints using browser development tools.
