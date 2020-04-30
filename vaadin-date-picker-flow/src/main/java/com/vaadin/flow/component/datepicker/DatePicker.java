@@ -50,6 +50,8 @@ import elemental.json.JsonObject;
 public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
         implements HasSize, HasValidation {
 
+    private static final String PROP_AUTO_OPEN_DISABLED = "autoOpenDisabled";
+
     private DatePickerI18n i18n;
 
     private final static SerializableFunction<String, LocalDate> PARSER = s -> {
@@ -603,7 +605,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      * @param autoOpenEnabled Value for the auto open enabled property,
      */
     public void setAutoOpenEnabled(boolean autoOpenEnabled) {
-        getElement().setProperty("autoOpenDisabled", !autoOpenEnabled);
+        getElement().setProperty(PROP_AUTO_OPEN_DISABLED, !autoOpenEnabled);
     }
 
     /**
@@ -612,7 +614,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      * @return {@code true} if auto open is enabled. {@code false} otherwise. Default is {@code true}
      */
     public boolean isAutoOpenEnabled() {
-        return !getElement().getProperty("autoOpenDisabled",false);
+        return !getElement().getProperty(PROP_AUTO_OPEN_DISABLED,false);
     }
 
     /**
