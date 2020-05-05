@@ -244,7 +244,7 @@ import elemental.json.JsonObject;
  * components are themable:
  * </p>
  * <ul>
- * <li>{@code <vaadin-text-field>}</li>
+ * <li>{@code <vaadin-date-picker-text-field>}</li>
  * <li>{@code <vaadin-date-picker-overlay>}</li>
  * <li>{@code <vaadin-date-picker-overlay-content>}</li>
  * <li>{@code <vaadin-month-calendar>}</li>
