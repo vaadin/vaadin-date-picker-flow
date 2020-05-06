@@ -26,6 +26,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasValidation;
 import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.Synchronize;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.function.SerializableConsumer;
@@ -88,6 +89,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
         setInvalid(false);
 
         addValueChangeListener(e -> validate());
+        addBlurListener(e -> validate());
 
         FieldValidationUtil.disableClientValidation(this);
     }
@@ -400,14 +402,17 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      * because it is possible to circumvent the client side validation
      * constraints using browser development tools.
      */
-    private boolean isInvalid(LocalDate value) {
+    private boolean isInvalid(LocalDate value, String inputValue) {
         final boolean isRequiredButEmpty = required
                 && Objects.equals(getEmptyValue(), value);
         final boolean isGreaterThanMax = value != null && max != null
                 && value.isAfter(max);
         final boolean isSmallerThenMin = value != null && min != null
                 && value.isBefore(min);
-        return isRequiredButEmpty || isGreaterThanMax || isSmallerThenMin;
+        final boolean hasNonParseableInputString = value == null
+                && !inputValue.isEmpty();
+        return isRequiredButEmpty || isGreaterThanMax || isSmallerThenMin
+                || hasNonParseableInputString;
     }
 
     /**
@@ -605,7 +610,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      * constraints using browser development tools.
      */
     protected void validate() {
-        setInvalid(isInvalid(getValue()));
+        setInvalid(isInvalid(getValue(), getInputValue()));
     }
 
     @Override
@@ -618,6 +623,11 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
     public Registration addInvalidChangeListener(
             ComponentEventListener<InvalidChangeEvent<DatePicker>> listener) {
         return super.addInvalidChangeListener(listener);
+    }
+
+    @Synchronize(property = "_inputValue", value = "sync-input-value")
+    private String getInputValue() {
+        return getElement().getProperty("_inputValue", "");
     }
 
     /**

@@ -95,6 +95,7 @@ public class DatePickerElement extends TestBenchElement implements HasLabel {
     public void setInputValue(String value) {
         executeScript("arguments[0].open();", this);
         setProperty("_inputValue", value);
+        executeScript("arguments[0].dispatchEvent(new Event('blur'));", this);
         executeScript("arguments[0].close();", this);
     }
 

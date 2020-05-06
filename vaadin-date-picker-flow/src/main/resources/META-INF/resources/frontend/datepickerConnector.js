@@ -29,6 +29,13 @@
                 return;
             }
 
+            const notifyInputValueChange = () => {
+                datepicker.dispatchEvent(new CustomEvent('sync-input-value'));
+            }
+
+            datepicker.addEventListener('value-changed', notifyInputValueChange);
+            datepicker.addEventListener('blur', notifyInputValueChange);
+
             datepicker.$connector = {};
 
             /* init helper parts for reverse-engineering date-regex */
