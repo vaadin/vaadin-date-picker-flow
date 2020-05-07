@@ -17,6 +17,7 @@ package com.vaadin.flow.component.datepicker;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.vaadin.flow.component.datepicker.testbench.DatePickerElement;
@@ -44,6 +45,10 @@ public class DatePickerBinderIT extends AbstractComponentIT {
 
     private void setInternalValidBinderInvalidValue(DatePickerElement field) {
         field.setInputValue("1/2/2019");
+    }
+
+    private void setInternalInvalidBinderValidValue(DatePickerElement field) {
+        field.setInputValue("3/2/2019");
     }
 
     @Test
@@ -75,6 +80,13 @@ public class DatePickerBinderIT extends AbstractComponentIT {
                 field);
 
         Assert.assertEquals(field.getPropertyString("label"), "invalid");
+    }
+
+    @Test
+    @Ignore // until getDefaultValidator implemented
+    public void dateField_internalValidationFail_binderValidationPass_fieldInvalid() {
+        setInternalInvalidBinderValidValue(field);
+        assertInvalid(field);
     }
 
     private void assertInvalidatedByBinder(DatePickerElement field) {

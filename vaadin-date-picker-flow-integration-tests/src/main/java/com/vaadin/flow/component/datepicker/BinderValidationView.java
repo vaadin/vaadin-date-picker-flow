@@ -19,6 +19,7 @@ public class BinderValidationView extends Div {
 
         // Set date field validation constraint
         dateField.setMin(LocalDate.of(2019, 1, 1));
+        dateField.setMax(LocalDate.of(2019, 3, 1));
 
         // Set invalid indicator label
         String invalidString = "invalid";
