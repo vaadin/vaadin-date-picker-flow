@@ -29,12 +29,13 @@
                 return;
             }
 
-            const notifyInputValueChange = () => {
-                datepicker.dispatchEvent(new CustomEvent('sync-input-value'));
+            const updateInvalidDateString = () => {
+                datepicker._invalidDateString = !datepicker.value && datepicker._inputValue.length;
+                datepicker.dispatchEvent(new CustomEvent('sync-invalid-date-string'));
             }
 
-            datepicker.addEventListener('value-changed', notifyInputValueChange);
-            datepicker.addEventListener('blur', notifyInputValueChange);
+            datepicker.addEventListener('value-changed', updateInvalidDateString);
+            datepicker.addEventListener('blur', updateInvalidDateString);
 
             datepicker.$connector = {};
 

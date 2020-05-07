@@ -402,17 +402,15 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      * because it is possible to circumvent the client side validation
      * constraints using browser development tools.
      */
-    private boolean isInvalid(LocalDate value, String inputValue) {
+    private boolean isInvalid(LocalDate value, boolean invalidDateString) {
         final boolean isRequiredButEmpty = required
                 && Objects.equals(getEmptyValue(), value);
         final boolean isGreaterThanMax = value != null && max != null
                 && value.isAfter(max);
         final boolean isSmallerThenMin = value != null && min != null
                 && value.isBefore(min);
-        final boolean hasNonParseableInputString = value == null
-                && !inputValue.isEmpty();
         return isRequiredButEmpty || isGreaterThanMax || isSmallerThenMin
-                || hasNonParseableInputString;
+                || invalidDateString;
     }
 
     /**
@@ -610,7 +608,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      * constraints using browser development tools.
      */
     protected void validate() {
-        setInvalid(isInvalid(getValue(), getInputValue()));
+        setInvalid(isInvalid(getValue(), isInvalidDateString()));
     }
 
     @Override
@@ -625,9 +623,9 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
         return super.addInvalidChangeListener(listener);
     }
 
-    @Synchronize(property = "_inputValue", value = "sync-input-value")
-    private String getInputValue() {
-        return getElement().getProperty("_inputValue", "");
+    @Synchronize(property = "_invalidDateString", value = "sync-invalid-date-string")
+    private boolean isInvalidDateString() {
+        return getElement().getProperty("_invalidDateString", false);
     }
 
     /**
