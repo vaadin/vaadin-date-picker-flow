@@ -17,6 +17,7 @@ package com.vaadin.flow.component.datepicker;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.vaadin.flow.component.datepicker.testbench.DatePickerElement;
@@ -73,6 +74,19 @@ public class InvalidDateStringIT extends AbstractComponentIT {
         datePicker.setInputValue("1/1/2020");
         assertValid(true);
         assertValue("2020-01-01");
+    }
+
+    @Test
+    @Ignore
+    // Ignore until Binder validates on blur:
+    // https://github.com/vaadin/flow/issues/8242
+    public void binderAsRequired_setInvalidDateString_clearField_fieldInvalid() {
+        clickElementWithJs("add-binder-as-required");
+        datePicker.setInputValue("asdf");
+        datePicker.setInputValue("");
+        // Verifies that Binder validator runs after component validators
+        assertValid(false);
+        assertValue("");
     }
 
     private void assertValid(boolean expectedValid) {
