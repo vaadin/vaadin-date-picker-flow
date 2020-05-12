@@ -28,9 +28,9 @@ public class DatePickerAutoOpenPage extends Div {
         final Div autoOpenStatus = new Div();
         autoOpenStatus.setId("auto-open-status");
         final Runnable updateDiv = () -> autoOpenStatus
-            .setText(String.valueOf(datePicker.isAutoOpenEnabled()));
+            .setText(String.valueOf(datePicker.isAutoOpen()));
         final Consumer<Boolean> updateEnabledStatus = status -> {
-            datePicker.setAutoOpenEnabled(status);
+            datePicker.setAutoOpen(status);
             updateDiv.run();
         };
         final NativeButton enableButton = new NativeButton("Enable auto open",

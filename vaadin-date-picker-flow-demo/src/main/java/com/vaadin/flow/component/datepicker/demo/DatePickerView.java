@@ -142,7 +142,7 @@ public class DatePickerView extends DemoView {
         DatePicker datePicker = new DatePicker();
 
         // Dropdown is only opened when clicking the toggle button or pressing Up or Down arrow keys.
-        datePicker.setAutoOpenEnabled(false);
+        datePicker.setAutoOpen(false);
         // end-source-example
 
         addCard("Auto open disabled", datePicker);

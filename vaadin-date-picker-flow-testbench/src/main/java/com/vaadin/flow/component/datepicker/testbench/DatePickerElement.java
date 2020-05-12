@@ -92,7 +92,7 @@ public class DatePickerElement extends TestBenchElement implements HasLabel {
      *
      * @return {@code true} if auto open is enabled. {@code false} otherwise. Default is {@code true}
      */
-    public boolean isAutoOpenEnabled() {
+    public boolean isAutoOpen() {
         return !getPropertyBoolean("autoOpenDisabled");
     }
 }

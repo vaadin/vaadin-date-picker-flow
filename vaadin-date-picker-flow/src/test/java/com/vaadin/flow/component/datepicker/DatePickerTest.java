@@ -133,12 +133,12 @@ public class DatePickerTest {
     public void setAutoOpenEnabled() {
         DatePicker picker = new DatePicker();
         assertTrue("Auto-open should be enabled by default",
-            picker.isAutoOpenEnabled());
-        picker.setAutoOpenEnabled(false);
+            picker.isAutoOpen());
+        picker.setAutoOpen(false);
         assertFalse("Should be possible to disable auto-open",
-            picker.isAutoOpenEnabled());
-        picker.setAutoOpenEnabled(true);
+            picker.isAutoOpen());
+        picker.setAutoOpen(true);
         assertTrue("Should be possible to enable auto-open",
-            picker.isAutoOpenEnabled());
+            picker.isAutoOpen());
     }
 }

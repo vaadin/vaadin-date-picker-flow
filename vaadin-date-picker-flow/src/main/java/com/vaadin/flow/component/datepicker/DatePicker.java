@@ -602,10 +602,10 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
     /**
      * When auto open is enabled, the dropdown will open when the field is clicked.
      *
-     * @param autoOpenEnabled Value for the auto open enabled property,
+     * @param autoOpen Value for the auto open enabled property,
      */
-    public void setAutoOpenEnabled(boolean autoOpenEnabled) {
-        getElement().setProperty(PROP_AUTO_OPEN_DISABLED, !autoOpenEnabled);
+    public void setAutoOpen(boolean autoOpen) {
+        getElement().setProperty(PROP_AUTO_OPEN_DISABLED, !autoOpen);
     }
 
     /**
@@ -613,7 +613,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      *
      * @return {@code true} if auto open is enabled. {@code false} otherwise. Default is {@code true}
      */
-    public boolean isAutoOpenEnabled() {
+    public boolean isAutoOpen() {
         return !getElement().getProperty(PROP_AUTO_OPEN_DISABLED,false);
     }
 
