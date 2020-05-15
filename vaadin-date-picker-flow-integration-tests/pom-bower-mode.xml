@@ -45,8 +45,8 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-grid-flow</artifactId>
-            <version>4.1-SNAPSHOT</version>
-        </dependency>            
+            <version>4.2-SNAPSHOT</version>
+        </dependency>
 
         <!-- Test util -->
         <dependency>
