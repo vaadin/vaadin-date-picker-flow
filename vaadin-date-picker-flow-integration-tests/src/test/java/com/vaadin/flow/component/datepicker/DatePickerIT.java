@@ -190,29 +190,10 @@ public class DatePickerIT extends ComponentDemoTest {
                 "return arguments[0].value === '25/03/2018'", displayText));
     }
 
-    /**
-     * Opens the overlay, sets the value to the inner input element as a string
-     * and closes the overlay. This simulates the user typing into the input and
-     * triggering an update of the value property.
-     */
-    private void setInputValue(DatePickerElement datePicker, String value) {
-        executeScript("arguments[0].open();", datePicker);
-        datePicker.setProperty("_inputValue", value);
-        executeScript("arguments[0].close();", datePicker);
-    }
-
-    /**
-     * Gets the visible presentation value from the inner input element as a
-     * string. This value depends on the used Locale.
-     */
-    private String getInputValue(DatePickerElement datePicker) {
-        return datePicker.getPropertyString("_inputValue");
-    }
-
     private void setDateAndAssert(DatePickerElement datePicker, LocalDate date,
             String expectedInputValue) {
         datePicker.setDate(date);
-        Assert.assertEquals(expectedInputValue, getInputValue(datePicker));
+        Assert.assertEquals(expectedInputValue, datePicker.getInputValue());
     }
 
     @Test
@@ -228,7 +209,7 @@ public class DatePickerIT extends ComponentDemoTest {
                 "3/7/87");
 
         $("button").id("Locale-UK").click();
-        Assert.assertEquals("07/03/87", getInputValue(localePicker));
+        Assert.assertEquals("07/03/87", localePicker.getInputValue());
 
         setDateAndAssert(localePicker, LocalDate.of(900, Month.MARCH, 6),
                 "06/03/900");
@@ -236,7 +217,7 @@ public class DatePickerIT extends ComponentDemoTest {
                 "06/03/87");
 
         $("button").id("Locale-US").click();
-        Assert.assertEquals("3/6/87", getInputValue(localePicker));
+        Assert.assertEquals("3/6/87", localePicker.getInputValue());
 
         setDateAndAssert(localePicker, LocalDate.of(900, Month.MARCH, 5),
                 "3/5/900");
@@ -244,7 +225,7 @@ public class DatePickerIT extends ComponentDemoTest {
                 "3/5/87");
 
         $("button").id("Locale-CHINA").click();
-        Assert.assertEquals("87/3/5", getInputValue(localePicker));
+        Assert.assertEquals("87/3/5", localePicker.getInputValue());
 
         setDateAndAssert(localePicker, LocalDate.of(900, Month.MARCH, 4),
                 "900/3/4");
@@ -252,7 +233,7 @@ public class DatePickerIT extends ComponentDemoTest {
                 "87/3/4");
 
         $("button").id("Locale-UK").click();
-        Assert.assertEquals("04/03/87", getInputValue(localePicker));
+        Assert.assertEquals("04/03/87", localePicker.getInputValue());
     }
 
     /**
@@ -261,8 +242,8 @@ public class DatePickerIT extends ComponentDemoTest {
     private void setInputValueAndAssert(DatePickerElement datePicker,
             String inputValue, String expectedInputValue,
             LocalDate expectedDate) {
-        setInputValue(datePicker, inputValue);
-        Assert.assertEquals(expectedInputValue, getInputValue(datePicker));
+        datePicker.setInputValue(inputValue);
+        Assert.assertEquals(expectedInputValue, datePicker.getInputValue());
         Assert.assertEquals(expectedDate, datePicker.getDate());
     }
 
@@ -297,7 +278,7 @@ public class DatePickerIT extends ComponentDemoTest {
                 LocalDate.of(20, Month.MARCH, 8));
 
         $("button").id("Locale-UK").click();
-        Assert.assertEquals("08/03/20", getInputValue(localePicker));
+        Assert.assertEquals("08/03/20", localePicker.getInputValue());
 
         setInputValueAndAssert(localePicker, "7/3/0900", "07/03/900",
                 LocalDate.of(900, Month.MARCH, 7));
@@ -314,7 +295,7 @@ public class DatePickerIT extends ComponentDemoTest {
                 LocalDate.of(20, Month.MARCH, 8));
 
         $("button").id("Locale-CHINA").click();
-        Assert.assertEquals("20/3/8", getInputValue(localePicker));
+        Assert.assertEquals("20/3/8", localePicker.getInputValue());
 
         setInputValueAndAssert(localePicker, "0900/3/7", "900/3/7",
                 LocalDate.of(900, Month.MARCH, 7));
@@ -331,7 +312,7 @@ public class DatePickerIT extends ComponentDemoTest {
                 LocalDate.of(20, Month.MARCH, 8));
 
         $("button").id("Locale-US").click();
-        Assert.assertEquals("3/8/20", getInputValue(localePicker));
+        Assert.assertEquals("3/8/20", localePicker.getInputValue());
     }
 
     @Override
