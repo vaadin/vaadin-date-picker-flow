@@ -351,7 +351,7 @@ public class DatePickerView extends DemoView {
 
     private void themeVariantsSmallSize() {
         // begin-source-example
-        // source-example-heading: Text align
+        // source-example-heading: Small text field
         DatePicker datePicker = new DatePicker();
         datePicker.setLabel("Label");
         datePicker.getElement().setAttribute("theme", "small");
