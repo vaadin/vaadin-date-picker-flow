@@ -17,7 +17,6 @@ package com.vaadin.flow.component.datepicker.demo;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
-import com.vaadin.flow.component.datepicker.DatePicker.DatePickerI18n;
 import com.vaadin.flow.component.datepicker.demo.entity.Appointment;
 import com.vaadin.flow.component.datepicker.demo.entity.Person;
 import com.vaadin.flow.component.html.Anchor;
@@ -206,11 +205,11 @@ public class DatePickerView extends DemoView {
     }
 
     private void startAndEndDatePickers() {
+        // begin-source-example
+        // source-example-heading: Date range
         Div message = new Div();
         message.setText("Selected range: ");
 
-        // begin-source-example
-        // source-example-heading: Date range
         DatePicker fromDatePicker = new DatePicker();
         fromDatePicker.setLabel("From date");
         DatePicker toDatePicker = new DatePicker();
@@ -270,7 +269,7 @@ public class DatePickerView extends DemoView {
         DatePicker datePicker = new DatePicker();
         datePicker.setLabel("Label");
         datePicker.setWeekNumbersVisible(true);
-        datePicker.setI18n(new DatePickerI18n().setWeek("Week")
+        datePicker.setI18n(new DatePicker.DatePickerI18n().setWeek("Week")
                 .setCalendar("Calendar").setClear("Clear").setToday("Today")
                 .setCancel("cancel").setFirstDayOfWeek(1)
                 .setMonthNames(Arrays.asList("January", "February", "March",
@@ -295,7 +294,7 @@ public class DatePickerView extends DemoView {
         datePicker.setPlaceholder("Syntymäpäivä");
         datePicker.setLocale(new Locale("fi"));
 
-        datePicker.setI18n(new DatePickerI18n().setWeek("viikko")
+        datePicker.setI18n(new DatePicker.DatePickerI18n().setWeek("viikko")
                 .setCalendar("kalenteri").setClear("tyhjennä")
                 .setToday("tänään").setCancel("peruuta").setFirstDayOfWeek(1)
                 .setMonthNames(Arrays.asList("tammiku", "helmikuu", "maaliskuu",
@@ -335,7 +334,7 @@ public class DatePickerView extends DemoView {
         // source-example-heading: Simple date picker
         DatePicker datePicker = new DatePicker();
         datePicker.setLabel("Label");
-        datePicker.setI18n(new DatePickerI18n().setWeek("Week")
+        datePicker.setI18n(new DatePicker.DatePickerI18n().setWeek("Week")
                 .setCalendar("Calendar").setClear("clear").setToday("today")
                 .setCancel("cancel").setFirstDayOfWeek(1)
                 .setMonthNames(Arrays.asList("January", "February", "March",
