@@ -159,10 +159,10 @@ public class DatePickerView extends DemoView {
         Div div = new Div();
         // begin-source-example
         // source-example-heading: Helper text and Helper component
-        DatePicker datePickerHelperText = new DatePicker();
+        DatePicker datePickerHelperText = new DatePicker("Delivery");
         datePickerHelperText.setHelperText("Select a delivery date");
 
-        DatePicker datePickerHelperComponent = new DatePicker();
+        DatePicker datePickerHelperComponent = new DatePicker("Order");
         datePickerHelperComponent
               .setHelperComponent(new Span("Select an order date"));
         // end-source-example
@@ -412,12 +412,12 @@ public class DatePickerView extends DemoView {
         Div div = new Div();
         // begin-source-example
         // source-example-heading: Helper text and component above the field
-        DatePicker datePickerHelperTextAbove = new DatePicker();
+        DatePicker datePickerHelperTextAbove = new DatePicker("Label");
         datePickerHelperTextAbove.setHelperText("Helper text above the field");
         datePickerHelperTextAbove.getElement().getThemeList()
               .set("helper-above-field", true);
 
-        DatePicker datePickerHelperComponentAbove = new DatePicker();
+        DatePicker datePickerHelperComponentAbove = new DatePicker("Label");
         datePickerHelperComponentAbove
               .setHelperComponent(new Span("Helper component above the field"));
         datePickerHelperComponentAbove.getElement().getThemeList()
