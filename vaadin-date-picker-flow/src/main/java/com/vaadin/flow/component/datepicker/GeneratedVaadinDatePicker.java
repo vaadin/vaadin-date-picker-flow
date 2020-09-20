@@ -1193,8 +1193,8 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
             SerializableFunction<T, P> modelToPresentation) {
         super("value", defaultValue, elementPropertyType, presentationToModel,
                 modelToPresentation);
-        if (initialValue != null) {
-            setModelValue(initialValue, false);
+        if (getElement().getPropertyRaw("value") == null
+                && initialValue != null) {
             setPresentationValue(initialValue);
         }
     }
@@ -1213,8 +1213,8 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
     public GeneratedVaadinDatePicker(T initialValue, T defaultValue,
             boolean acceptNullValues) {
         super("value", defaultValue, acceptNullValues);
-        if (initialValue != null) {
-            setModelValue(initialValue, false);
+        if (getElement().getPropertyRaw("value") == null
+                && initialValue != null) {
             setPresentationValue(initialValue);
         }
     }
@@ -1244,8 +1244,8 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
             SerializableBiFunction<R, T, P> modelToPresentation) {
         super("value", defaultValue, elementPropertyType, presentationToModel,
                 modelToPresentation);
-        if (initialValue != null) {
-            setModelValue(initialValue, false);
+        if (getElement().getPropertyRaw("value") == null
+                && initialValue != null) {
             setPresentationValue(initialValue);
         }
     }
