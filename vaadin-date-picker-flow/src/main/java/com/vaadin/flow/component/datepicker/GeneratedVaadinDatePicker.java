@@ -1190,11 +1190,12 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
     public <P> GeneratedVaadinDatePicker(T initialValue, T defaultValue,
             Class<P> elementPropertyType,
             SerializableFunction<P, T> presentationToModel,
-            SerializableFunction<T, P> modelToPresentation) {
+            SerializableFunction<T, P> modelToPresentation,
+            boolean isInitialValueOptional) {
         super("value", defaultValue, elementPropertyType, presentationToModel,
                 modelToPresentation);
-        if (getElement().getPropertyRaw("value") == null
-                && initialValue != null) {
+        if ((getElement().getProperty("value") == null
+                || !isInitialValueOptional) && initialValue != null) {
             setPresentationValue(initialValue);
         }
     }
@@ -1213,8 +1214,7 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
     public GeneratedVaadinDatePicker(T initialValue, T defaultValue,
             boolean acceptNullValues) {
         super("value", defaultValue, acceptNullValues);
-        if (getElement().getPropertyRaw("value") == null
-                && initialValue != null) {
+        if (initialValue != null) {
             setPresentationValue(initialValue);
         }
     }
@@ -1244,8 +1244,7 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
             SerializableBiFunction<R, T, P> modelToPresentation) {
         super("value", defaultValue, elementPropertyType, presentationToModel,
                 modelToPresentation);
-        if (getElement().getPropertyRaw("value") == null
-                && initialValue != null) {
+        if (initialValue != null) {
             setPresentationValue(initialValue);
         }
     }
@@ -1255,6 +1254,6 @@ public abstract class GeneratedVaadinDatePicker<R extends GeneratedVaadinDatePic
      */
     public GeneratedVaadinDatePicker() {
         this(null, null, null, (SerializableFunction) null,
-                (SerializableFunction) null);
+                (SerializableFunction) null, false);
     }
 }

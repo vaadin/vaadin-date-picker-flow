@@ -42,6 +42,17 @@ public class DatePickerTest {
 
     private static final String OPENED_PROPERTY_NOT_UPDATED = "The server-side \"opened\"-property was not updated synchronously";
 
+    private static LocalDate TEST_VALUE = LocalDate.now();
+
+    private static class TestDatePicker
+            extends GeneratedVaadinDatePicker<TestDatePicker, LocalDate> {
+
+        TestDatePicker() {
+            super(TEST_VALUE, null, String.class, value -> null, value -> null,
+                    true);
+        }
+    }
+
     private UI ui;
 
     @Before
@@ -144,10 +155,10 @@ public class DatePickerTest {
 
         Mockito.when(service.getInstantiator()).thenReturn(instantiator);
 
-        Mockito.when(instantiator.createComponent(DatePicker.class))
-                .thenAnswer(invocation -> new DatePicker());
+        Mockito.when(instantiator.createComponent(TestDatePicker.class))
+                .thenAnswer(invocation -> new TestDatePicker());
 
-        DatePicker field = Component.from(element, DatePicker.class);
+        TestDatePicker field = Component.from(element, TestDatePicker.class);
         Assert.assertEquals("2007-12-03",
                 field.getElement().getPropertyRaw("value"));
     }
