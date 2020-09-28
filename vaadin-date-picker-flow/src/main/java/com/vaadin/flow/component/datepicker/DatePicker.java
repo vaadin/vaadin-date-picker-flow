@@ -81,15 +81,7 @@ public class DatePicker extends GeneratedVaadinDatePicker<DatePicker, LocalDate>
      * @see #setValue(Object)
      */
     public DatePicker(LocalDate initialDate) {
-        super(initialDate, null, String.class, PARSER, FORMATTER, false);
-        setLocale(UI.getCurrent().getLocale());
-
-        // workaround for https://github.com/vaadin/flow/issues/3496
-        setInvalid(false);
-
-        addValueChangeListener(e -> validate());
-
-        FieldValidationUtil.disableClientValidation(this);
+        this(initialDate, false);
     }
 
     /**
