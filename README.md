@@ -1,3 +1,9 @@
+
+⚠️ **This repository is deprecated**
+- Sources for this flow component can be found at https://github.com/vaadin/vaadin-flow-component
+- Tickets has been moved to the web component repository https://github.com/vaadin/vaadin-date-picker/issues
+
+
 # DatePicker component for Vaadin Flow
 
 This project is the Component wrapper implementation of [`<vaadin-date-picker>`](https://github.com/vaadin/vaadin-date-picker) element
